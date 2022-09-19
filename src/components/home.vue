@@ -35,6 +35,17 @@
       </div>
     </div>
   </div>
+  <div class="logo-bar">
+    <div class="poly-logo">
+
+    </div>
+    <div class="google-logo">
+
+    </div>
+    <div class="moodle-logo">
+
+    </div>
+  </div>
 </div>
 </template>
 
@@ -123,9 +134,17 @@ export default {
     }
   }
 }
+.logo-bar {
+  display: flex;
+  align-items: center;
+  gap: 176px;
+  margin: 0 20%;
+
+}
 .v-btn{
   width: fit-content;
   text-transform: lowercase;
 }
+
 
 </style>
