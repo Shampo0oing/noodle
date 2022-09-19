@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-app-bar app clipped-left elevation="1" color="bgColor">
+    <v-app-bar v-if="isLogged" app clipped-left elevation="1" color="bgColor">
       <v-img
         contain
         src="https://i.imgur.com/U4sYwAj.png"
@@ -45,28 +45,35 @@
         </section>
       </v-navigation-drawer>
     </v-app-bar>
-    <Sidebar></Sidebar>
+    <Sidebar v-if="isLogged"></Sidebar>
     <v-main app>
       <!-- Provides the application the proper gutter -->
-      <v-container fluid class="pa-10">
+      <v-container v-if="isLogged"  fluid class="pa-10">
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
+      <Home v-if="!isLogged"></Home>
+
     </v-main>
   </v-app>
+
 </template>
 
 <script>
 import Sidebar from "@/components/sidebar";
+import Home from "@/components/home";
 import SettingsIcon from "@/components/icons/settings";
+
 
 export default {
   name: "App",
   components: {
+    Home,
     SettingsIcon,
     Sidebar,
   },
   data: () => ({
+    isLogged: false,
     isDarkTheme: 0,
     navSettings: false,
     items: [
@@ -94,6 +101,7 @@ export default {
 
 <style scoped lang="scss">
 #app {
+  padding: 32px;
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -112,6 +120,6 @@ export default {
 }
 
 ::v-deep path {
-  stroke: var(--v-text-base) !important;
+  //stroke: var(--v-text-base) !important;
 }
 </style>
