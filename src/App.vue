@@ -101,7 +101,6 @@ export default {
 
 <style scoped lang="scss">
 #app {
-  padding: 32px;
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
