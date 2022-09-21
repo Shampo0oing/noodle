@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import App from './App.vue'
-import vuetify from '@/plugins/vuetify'
-import router from './router'
+import Vue from "vue";
+import App from "./App.vue";
+import vuetify from "@/plugins/vuetify";
+import router from "./router";
+import "./assets/style/global.scss";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // router.beforeEach((to, from, next) => {
 //     console.log('beforeEach', to.path + ' - Auth: ' + auth.user.authenticated)
@@ -28,7 +29,8 @@ Vue.config.productionTip = false
 //   })
 
 new Vue({
-    vuetify,
-    router,
-    render: h => h(App),
-}).$mount('#app')
+  el: "#app",
+  vuetify,
+  router,
+  render: (h) => h(App),
+}).$mount("#app");

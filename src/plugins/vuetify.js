@@ -14,7 +14,7 @@ export default new Vuetify({
       dark: {
         bgColor: "#222831",
         bgColor2: "#393e46",
-        primary: "#6995FF",
+        primary: "#8080D7",
         secondary: "#6e9887",
         error: "#ff6b6b",
         text: "#ffffff",
@@ -23,7 +23,7 @@ export default new Vuetify({
       light: {
         bgColor: "#ffffff",
         bgColor2: "#f8f9fe",
-        primary: "#6995FF",
+        primary: "#8080D7",
         secondary: "#6e9887",
         error: "#ff6b6b",
         text: "#000000",

@@ -1,52 +1,52 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Schedule from "@/components/schedule.vue";
-import Home from "@/components/home.vue";
-import Dashboard from "@/components/dashboard.vue";
-import Page from "@/components/page.vue";
+import Schedule from "@/pages/schedule.vue";
+import Home from "@/pages/landing.vue";
+import Dashboard from "@/pages/dashboard.vue";
+import Page from "@/pages/page.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     component: Page,
     children: [
       {
-        path: 'dashboard',
-        name: 'Dashboard',
+        path: "dashboard",
+        name: "Dashboard",
         component: Dashboard,
-        auth: true
+        auth: true,
       },
       {
-        path: 'schedule',
-        name: 'Schedule',
+        path: "schedule",
+        name: "Schedule",
         component: Schedule,
-        auth: true
+        auth: true,
       },
       {
-        path: 'classes',
-        name: 'Classes',
+        path: "classes",
+        name: "Classes",
         component: Dashboard,
-        auth: true
+        auth: true,
       },
       {
-        path: 'user',
-        name: 'User',
+        path: "user",
+        name: "User",
         component: Dashboard,
-        auth: true
+        auth: true,
       },
-    ]
+    ],
   },
   {
-    path: '/landing',
-    name: 'Landing',
-    component: Home
-  }
-]
+    path: "/landing",
+    name: "Landing",
+    component: Home,
+  },
+];
 
 const router = new VueRouter({
-    routes
+  routes,
 });
 
-export default router
+export default router;

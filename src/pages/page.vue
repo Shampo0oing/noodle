@@ -48,20 +48,17 @@
     <Sidebar></Sidebar>
     <v-main app>
       <!-- Provides the application the proper gutter -->
-      <v-container  fluid class="pa-10">
+      <v-container fluid class="pa-10">
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
-
     </v-main>
   </v-app>
-
 </template>
 
 <script>
 import Sidebar from "@/components/sidebar";
-import SettingsIcon from "@/components/icons/settings";
-
+import SettingsIcon from "@/icons/settings";
 
 export default {
   name: "page-app",
