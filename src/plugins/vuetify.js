@@ -21,7 +21,7 @@ export default new Vuetify({
         textLight: "#eeeeee",
       },
       light: {
-        bgColor: "#ffffff",
+        bgColor: "#F4F4F4",
         bgColor2: "#f8f9fe",
         primary: "#8080D7",
         secondary: "#6e9887",
