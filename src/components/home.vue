@@ -1,5 +1,5 @@
 <template>
-<div class="home-page">
+<div id="landing-page">
   <nav class="header-home">
     <a href="./">
       <svg xmlns="http://www.w3.org/2000/svg" width="111" height="34" viewBox="0 0 111 34" fill="none">
@@ -19,7 +19,7 @@
       <button type="button" class="contact">
         contact
       </button>
-      <v-btn class="connect" rounded color="#402F47" >
+      <v-btn to="/schedule" class="connect" rounded color="#402F47" >
         se connecter
       </v-btn>
     </section>
@@ -57,7 +57,7 @@ export default {
 
 <style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
-.home-page {
+#landing-page {
   font-family: Outfit, sans-serif;
   display: flex;
   flex-direction: column;
@@ -66,7 +66,7 @@ export default {
 
 .header-home {
 
-  margin: 0 25%;
+  margin: 32px 25% 0 25%;
   display: flex;
   justify-content: space-between;
 

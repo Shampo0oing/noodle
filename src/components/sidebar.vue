@@ -15,7 +15,7 @@
         mandatory
         class="pt-10"
       >
-        <v-list-item to="/home">
+        <v-list-item to="/landing">
           <v-list-item-icon>
             <svg
               xmlns="http://www.w3.org/2000/svg"
