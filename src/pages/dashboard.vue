@@ -4,7 +4,7 @@
 
 <script>
 export default {
-name: "main-app",
+name: "dashboard-app",
   data () {
     return {
     }
