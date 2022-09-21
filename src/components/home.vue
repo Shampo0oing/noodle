@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div id="landing-page">
     <nav class="header-home">
       <a href="./">
         <svg
@@ -40,7 +40,6 @@
           >
           <v-btn class="start-btn" rounded elevation="0">débuter</v-btn>
         </div>
-      </div>
     </div>
     <div class="logo-bar">
       <svg
@@ -264,8 +263,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
-.home-page {
+@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
+#landing-page {
   font-family: Outfit, sans-serif;
   display: flex;
   flex-direction: column;
