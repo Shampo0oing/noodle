@@ -388,7 +388,7 @@ export default {
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
-  margin: 0 24.5%;
+  margin: 0 230px;
   filter: drop-shadow(0px 10px 50px rgba(246, 201, 238, 0.42));
 
   .rect-1 {
