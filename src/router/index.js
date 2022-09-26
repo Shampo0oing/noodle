@@ -3,14 +3,15 @@ import VueRouter from "vue-router";
 import Schedule from "@/pages/schedule.vue";
 import Home from "@/pages/landing.vue";
 import Dashboard from "@/pages/dashboard.vue";
-import Page from "@/pages/page.vue";
+// import Page from "@/pages/page.vue";
+import Signup from "../pages/signup";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    component: Page,
+    component: Signup,
     children: [
       {
         path: "dashboard",
