@@ -14,25 +14,25 @@ const routes = [
     children: [
       {
         path: "dashboard",
-        name: "Dashboard",
+        name: "Accueil",
         component: Dashboard,
         auth: true,
       },
       {
         path: "schedule",
-        name: "Schedule",
+        name: "Horaire",
         component: Schedule,
         auth: true,
       },
       {
         path: "classes",
-        name: "Classes",
+        name: "Cours",
         component: Dashboard,
         auth: true,
       },
       {
         path: "user",
-        name: "User",
+        name: "Compte",
         component: Dashboard,
         auth: true,
       },

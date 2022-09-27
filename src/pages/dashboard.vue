@@ -1,16 +1,14 @@
 <template>
-  <h1>Home</h1>
+  <h1></h1>
 </template>
 
 <script>
 export default {
-name: "dashboard-app",
-  data () {
-    return {
-    }
+  name: "dashboard-app",
+  data() {
+    return {};
   },
-}
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

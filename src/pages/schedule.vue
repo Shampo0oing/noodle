@@ -1,49 +1,46 @@
 <template>
   <div>
-    <h1 class="mb-5">Schedule</h1>
-    <section class="page-content">
+    <HeaderBar>
+      <section class="d-flex gap-2">
+        <Autocomplete
+          label="Ajouter un cours"
+          @onAddEvent="addEvent($event)"
+        ></Autocomplete>
+      </section>
+    </HeaderBar>
+    <section class="page-content d-flex flex-column flex-lg-row">
       <div class="calendar-container">
         <v-calendar
           ref="calendar"
           locale="fr"
-          type="week"
+          :type="$vuetify.breakpoint.xsOnly ? 'day' : 'week'"
           first-time="07:30"
           interval-count="20"
-          disable-page-swipe
-          :value="start"
-          :class="{ hideDays: !$vuetify.breakpoint.mdAndUp }"
+          :value="$vuetify.breakpoint.xsOnly ? today : start"
           :short-weekdays="!$vuetify.breakpoint.mdAndUp"
           :events="events"
-          :weekdays="[1, 2, 3, 4, 5]"
+          :event-ripple="false"
+          :weekdays="$vuetify.breakpoint.mdAndUp ? [1, 2, 3, 4, 5] : [1, 2, 3]"
           :interval-minutes="60"
           :short-intervals="false"
-          @click:event="showEvent"
+          @click:event="showEventMenu"
+          @contextmenu:event="showEvenContextMenu($refs.contextMenu, $event)"
         >
         </v-calendar>
+        <ContextMenu ref="contextMenu"></ContextMenu>
         <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
           offset-x
         >
-          <v-card min-width="350px" flat>
-            <v-toolbar color="bgColor2" :elevation="0" outlined>
+          <v-card min-width="350px" flat color="bgColor1">
+            <v-toolbar :elevation="0" outlined color="bgColor2">
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-btn icon :href="selectedEvent.link" target="_blank">
-                <info-icon></info-icon>
-              </v-btn>
 
               <v-spacer></v-spacer>
 
-              <v-btn
-                icon
-                @click="
-                  deleteEvent(selectedEvent);
-                  selectedOpen = false;
-                "
-              >
-                <trash-icon></trash-icon>
-              </v-btn>
+              <trash-icon @click="deleteEvent(selectedEvent)"></trash-icon>
             </v-toolbar>
             <v-card-text>
               <span v-html="selectedEvent.details"></span>
@@ -56,7 +53,6 @@
           </v-card>
         </v-menu>
       </div>
-      <Autocomplete @addEvent="addEvent($event)"></Autocomplete>
     </section>
   </div>
 </template>
@@ -71,12 +67,13 @@ import {
   nextFriday,
 } from "date-fns";
 import TrashIcon from "@/icons/Trash";
-import InfoIcon from "@/icons/info";
 import Autocomplete from "@/components/autocomplete";
+import ContextMenu from "@/components/tools/contextMenu";
+import HeaderBar from "@/components/templates/header";
 
 export default {
   name: "schedule-page",
-  components: { InfoIcon, TrashIcon, Autocomplete },
+  components: { HeaderBar, TrashIcon, Autocomplete, ContextMenu },
   data: () => {
     const sunday = startOfWeek(new Date());
     const monday = nextMonday(sunday);
@@ -93,28 +90,54 @@ export default {
         thursday,
         friday,
       },
+      frToEngDays: {
+        Lundi: monday,
+        Mardi: tuesday,
+        Mercredi: wednesday,
+        Jeudi: thursday,
+        Vendredi: friday,
+      },
       colors: [
         "#2196f3",
         "#3F51B5",
         "#673AB7",
         "#00BCD4",
-        "#4CAF50",
-        "#FF9800",
+        "#48814a",
+        "#8c683d",
         "#757575",
       ],
-      descriptionLimit: 60,
       start: monday,
-      events: [],
+      today: new Date(),
+      events: [
+        {
+          color: "#234d98",
+          end: "2022-09-26 14:45",
+          isLab: undefined,
+          link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
+          name: "MTH0104",
+          start: "2022-09-26 12:45",
+        },
+        {
+          color: "#458fb5",
+          end: "2022-09-28 14:45",
+          isLab: undefined,
+          link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
+          name: "MTH0104",
+          start: "2022-09-28 12:45",
+        },
+      ],
+      addCourses: false,
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
+      dialog: false,
     };
   },
   methods: {
     console(toPrint) {
       console.log(toPrint);
     },
-    showEvent({ nativeEvent, event }) {
+    showEventMenu({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
@@ -132,8 +155,58 @@ export default {
 
       nativeEvent.stopPropagation();
     },
-    creatSchedule(date, hours) {
+    showEvenContextMenu(context, { nativeEvent, event }) {
+      context.show(nativeEvent, [
+        {
+          icon: ["far", "folder-open"],
+          text: "Ouvrir",
+          click: () => this.showEventMenu({ nativeEvent, event }),
+        },
+        {
+          icon: ["far", "pen-to-square"],
+          text: "Modifier",
+          click: () => alert("Option2"),
+        },
+        {
+          icon: ["fas", "list-ol"],
+          text: "Changer de groupe",
+          click: () => alert("Option2"),
+        },
+        {
+          icon: ["far", "trash-can"],
+          text: "Retirer ce cours",
+          click: () => this.deleteEvent(event),
+        },
+        {
+          icon: ["far", "circle-question"],
+          text: "Voir la page du cours",
+          click: () => alert("Option4"),
+        },
+      ]);
+    },
+    formatDate(date, hours) {
       return date.toISOString().split("T")[0] + " " + hours;
+    },
+    createEvent(event, group, color) {
+      let labWeek = group.time.split(" (")[1]
+        ? "(" + group.time.split(" (")[1]
+        : null;
+      const time = labWeek ? group.time.split(" (")[0] : group.time;
+      console.log(event.isLab);
+      return {
+        name: event.acronym + (group.isLab ? " (LAB)" : ""),
+        isLab: group.isLab,
+        link: event.link,
+        color,
+        start: this.formatDate(
+          this.frToEngDays[group.day],
+          time.split(" - ")[0].split("h").join(":")
+        ),
+        end: this.formatDate(
+          this.frToEngDays[group.day],
+          time.split(" - ")[1].split("h").join(":")
+        ),
+      };
     },
     addEvent(event) {
       const color = this.rndElement(this.colors);
@@ -147,38 +220,7 @@ export default {
     },
     deleteEvent(event) {
       this.events = this.events.filter((e) => e.name !== event.name);
-    },
-    createEvent(event, group, color) {
-      return {
-        name: event.acronym,
-        isLab: event.isLab,
-        link: event.link,
-        color,
-        start: this.creatSchedule(
-          this.stringToDay(group.day),
-          group.time.split(" - ")[0].split("h").join(":")
-        ),
-        end: this.creatSchedule(
-          this.stringToDay(group.day),
-          group.time.split(" - ")[1].split("h").join(":")
-        ),
-      };
-    },
-    stringToDay(string) {
-      switch (string) {
-        case "Lundi":
-          return this.weekDays.monday;
-        case "Mardi":
-          return this.weekDays.tuesday;
-        case "Mercredi":
-          return this.weekDays.wednesday;
-        case "Jeudi":
-          return this.weekDays.thursday;
-        case "Vendredi":
-          return this.weekDays.friday;
-        default:
-          return this.weekDays.monday;
-      }
+      this.selectedOpen = false;
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
@@ -195,12 +237,10 @@ export default {
 
 <style scoped lang="scss">
 .page-content {
-  display: flex;
   gap: 32px;
 
   .calendar-container {
-    width: 70%;
-    max-height: 70vh;
+    width: 100%;
   }
 }
 
@@ -208,39 +248,37 @@ export default {
   width: 5px;
 }
 ::v-deep ::-webkit-scrollbar-thumb {
-  background-color: var(--v-bgColor-darken2);
+  background-color: var(--v-bgColor2-base);
   border-radius: 5px;
 }
 
 ::v-deep .v-calendar {
+  &,
+  * {
+    border-color: var(--v-border-base) !important;
+  }
+
   .v-calendar-daily__interval-text {
     font-size: 16px !important;
   }
-  //.v-event-timed {
-  //  border-radius: 0 10px 10px 0;
-  //  border: none !important;
-  //
-  //  div {
-  //    height: 100%;
-  //    padding: 8px !important;
-  //    border-left: 3px solid var(--v-primary-darken2) !important;
-  //
-  //    .v-event-summary {
-  //      height: 100%;
-  //      display: flex;
-  //      flex-wrap: wrap;
-  //      flex-direction: column;
-  //    }
-  //  }
-  //}
+  .v-calendar-daily__scroll-area {
+    max-height: 70vh;
+    overflow-y: auto;
+
+    .v-calendar-daily__pane {
+      overflow: hidden;
+    }
+  }
   .v-calendar-daily_head-weekday {
     font-size: 16px;
   }
   .v-calendar-daily__body {
-    background-color: var(--v-bgColor2-base);
+    background-color: var(--v-bgColor1-base);
   }
   .v-calendar-daily__head {
-    background-color: var(--v-bgColor2-lighten1);
+    background-color: var(--v-bgColor2-base);
+    margin-right: 0 !important;
+    padding-right: 5px;
 
     .v-present {
       .v-btn__content {
@@ -252,10 +290,6 @@ export default {
       }
     }
   }
-
-  //.v-event-summary {
-  //  color: var(--v-primary-darken4);
-  //}
 
   &.hideDays {
     .v-calendar-daily_head-day-label {

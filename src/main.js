@@ -1,9 +1,45 @@
 import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "@/plugins/vuetify";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {
+  faHouse,
+  faCalendar,
+  faBookOpen,
+  faUser,
+  faListOl,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faFolderOpen,
+  faSquareMinus,
+  faShareFromSquare,
+  faCircleQuestion,
+  faTrashCan,
+  faSun,
+  faMoon,
+} from "@fortawesome/free-regular-svg-icons";
+
 import router from "./router";
 import "./assets/style/global.scss";
 
+library.add(
+  faHouse,
+  faCalendar,
+  faBookOpen,
+  faUser,
+  faListOl,
+  faTrashCan,
+  faFolderOpen,
+  faPenToSquare,
+  faSquareMinus,
+  faShareFromSquare,
+  faCircleQuestion,
+  faSun,
+  faMoon
+);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 // router.beforeEach((to, from, next) => {
@@ -16,7 +52,7 @@ Vue.config.productionTip = false;
 //       next()
 //     }
 //   })
-  
+
 //   // Whenerver Server Gives 401 Status Code, it logouts and redirect to login page
 //   Vue.http.interceptors.push((request, next) => {
 //     next(function (response) {
@@ -38,7 +74,7 @@ Vue.config.productionTip = false;
 //       next()
 //     }
 //   })
-  
+
 //   // Whenerver Server Gives 401 Status Code, it logouts and redirect to login page
 //   Vue.http.interceptors.push((request, next) => {
 //     next(function (response) {
