@@ -34,8 +34,10 @@
               <v-text-field v-model="selectedEvent.name"></v-text-field>
             </v-card-title>
             <v-card-subtitle class="d-flex gap-2">
-              <TimePicker></TimePicker>
-              <TimePicker></TimePicker>
+              <TimeRangePicker
+                :start="selectedEvent.start"
+                :end="selectedEvent.end"
+              ></TimeRangePicker>
             </v-card-subtitle>
             <v-card-actions class="justify-end">
               <v-btn @click="dialogModify = false">Annuler</v-btn>
@@ -61,16 +63,22 @@ import {
   nextWednesday,
   nextThursday,
   nextFriday,
-} from "date-fns";
-import Autocomplete from "@/components/autocomplete";
-import GroupDialog from "@/components/groupDialog";
-import ContextMenu from "@/components/tools/contextMenu";
-import HeaderBar from "@/components/templates/header";
-import TimePicker from "@/components/tools/timePicker";
+} from 'date-fns';
+import Autocomplete from '@/components/autocomplete';
+import GroupDialog from '@/components/groupDialog';
+import ContextMenu from '@/components/tools/contextMenu';
+import HeaderBar from '@/components/templates/header';
+import TimeRangePicker from '@/components/tools/timeRangePicker';
 
 export default {
-  name: "schedule-page",
-  components: { HeaderBar, Autocomplete, ContextMenu, GroupDialog, TimePicker },
+  name: 'schedule-page',
+  components: {
+    HeaderBar,
+    Autocomplete,
+    ContextMenu,
+    GroupDialog,
+    TimeRangePicker,
+  },
   data: () => {
     const sunday = startOfWeek(new Date());
     const monday = nextMonday(sunday);
@@ -95,32 +103,32 @@ export default {
         Vendredi: friday,
       },
       colors: [
-        "#2196f3",
-        "#3F51B5",
-        "#673AB7",
-        "#00BCD4",
-        "#48814a",
-        "#8c683d",
-        "#757575",
+        '#2196f3',
+        '#3F51B5',
+        '#673AB7',
+        '#00BCD4',
+        '#48814a',
+        '#8c683d',
+        '#757575',
       ],
       start: monday,
       today: new Date(),
       events: [
         {
-          color: "#234d98",
-          end: "2022-09-26 14:45",
+          color: '#234d98',
+          end: '2022-09-26 14:45',
           isLab: undefined,
-          link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
-          name: "MTH0104",
-          start: "2022-09-26 12:45",
+          link: 'https://www.polymtl.ca/programmes/cours/probabilites-et-statistique',
+          name: 'MTH0104',
+          start: '2022-09-26 12:45',
         },
         {
-          color: "#458fb5",
-          end: "2022-09-28 14:45",
+          color: '#458fb5',
+          end: '2022-09-28 14:45',
           isLab: undefined,
-          link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
-          name: "MTH0104",
-          start: "2022-09-28 12:45",
+          link: 'https://www.polymtl.ca/programmes/cours/probabilites-et-statistique',
+          name: 'MTH0104',
+          start: '2022-09-28 12:45',
         },
       ],
       addCourses: false,
@@ -138,50 +146,50 @@ export default {
     showEventMenu(context, { nativeEvent, event }) {
       context.show(nativeEvent, [
         {
-          icon: ["far", "pen-to-square"],
-          text: "Modifier",
+          icon: ['far', 'pen-to-square'],
+          text: 'Modifier',
           click: () => {
             this.selectedEvent = event;
             this.dialogModify = true;
           },
         },
         {
-          icon: ["fas", "list-ol"],
-          text: "Changer de groupe",
-          click: () => alert("Option2"),
+          icon: ['fas', 'list-ol'],
+          text: 'Changer de groupe',
+          click: () => alert('Option2'),
         },
         {
-          icon: ["far", "trash-can"],
-          text: "Retirer ce cours",
+          icon: ['far', 'trash-can'],
+          text: 'Retirer ce cours',
           click: () => this.deleteEvent(event),
         },
         {
-          icon: ["far", "circle-question"],
-          text: "Voir la page du cours",
-          click: () => alert("Option4"),
+          icon: ['far', 'circle-question'],
+          text: 'Voir la page du cours',
+          click: () => alert('Option4'),
         },
       ]);
     },
     formatDate(date, hours) {
-      return date.toISOString().split("T")[0] + " " + hours;
+      return date.toISOString().split('T')[0] + ' ' + hours;
     },
     createEvent(event, group, color) {
-      let labWeek = group.time.split(" (")[1]
-        ? "(" + group.time.split(" (")[1]
+      let labWeek = group.time.split(' (')[1]
+        ? '(' + group.time.split(' (')[1]
         : null;
-      const time = labWeek ? group.time.split(" (")[0] : group.time;
+      const time = labWeek ? group.time.split(' (')[0] : group.time;
       return {
-        name: event.acronym + (group.isLab ? " (LAB)" : ""),
+        name: event.acronym + (group.isLab ? ' (LAB)' : ''),
         isLab: group.isLab,
         link: event.link,
         color,
         start: this.formatDate(
           this.frToEngDays[group.day],
-          time.split(" - ")[0].split("h").join(":")
+          time.split(' - ')[0].split('h').join(':')
         ),
         end: this.formatDate(
           this.frToEngDays[group.day],
-          time.split(" - ")[1].split("h").join(":")
+          time.split(' - ')[1].split('h').join(':')
         ),
         model: event,
       };
