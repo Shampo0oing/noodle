@@ -3,15 +3,18 @@ import VueRouter from "vue-router";
 import Schedule from "@/pages/schedule.vue";
 import Home from "@/pages/landing.vue";
 import Dashboard from "@/pages/dashboard.vue";
-// import Page from "@/pages/page.vue";
-import Signup from "../pages/signup";
+import Page from "@/pages/page.vue";
+import Signup from "@/pages/signup";
+import Login from "@/pages/login";
+import Resetpass from "@/pages/resetPassword";
+import Changepass from "@/pages/changepass";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    component: Signup,
+    component: Page,
     children: [
       {
         path: "dashboard",
@@ -40,9 +43,29 @@ const routes = [
     ],
   },
   {
-    path: "/landing",
+    path: "/welcome",
     name: "Landing",
     component: Home,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: Signup,
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: "/reset",
+    name: "resetPass",
+    component: Resetpass,
+  },
+  {
+    path: "/changePass/:userId/:token",
+    name: "changePass",
+    component: Changepass,
   },
 ];
 

@@ -33,9 +33,8 @@
             <div class="box">
               <span class="input-text">Username</span>
               <v-text-field
-                v-on:keyup="checkUsername"
-                v-model="state.username"
-                label="entrer le Username"
+                v-model="username"
+                label="entrer Votre username/email"
                 single-line
                 outlined
                 rounded
@@ -44,33 +43,13 @@
                 hide-details
                 height="45"
               ></v-text-field>
-              <span v-if="v$.username.$error" class="error">{{
-                v$.username.$errors[0].$message
-              }}</span>
-            </div>
-            <div class="box">
-              <span class="input-text">Email</span>
-              <v-text-field
-                v-on:keyup="checkEmail"
-                v-model="state.email"
-                label="entrer le Email"
-                single-line
-                outlined
-                rounded
-                full-width
-                dense
-                hide-details
-                height="45"
-              ></v-text-field>
-              <span v-if="v$.email.$error" class="error">{{
-                v$.email.$errors[0].$message
-              }}</span>
             </div>
             <div class="box-password">
               <div class="box">
                 <span class="input-text">Mot de passe</span>
                 <v-text-field
-                  v-model="state.password"
+                  v-model="password"
+                  v-on:keyup.native.enter="sendForm"
                   label="entrer le Mot de passe"
                   single-line
                   outlined
@@ -81,40 +60,27 @@
                   height="45"
                   type="password"
                 ></v-text-field>
-                <span v-if="v$.password.$error" class="error">{{
-                  v$.password.$errors[0].$message
-                }}</span>
-              </div>
-              <div class="box">
-                <v-text-field
-                  v-model="state.confirmed"
-                  label="Verifier votre mot de passe"
-                  single-line
-                  outlined
-                  rounded
-                  full-width
-                  dense
-                  hide-details
-                  height="45"
-                  type="password"
-                ></v-text-field>
-                <span v-if="v$.confirmed.$error" class="error">{{
-                  v$.confirmed.$errors[0].$message
-                }}</span>
+                <span v-if="wrong" class="error">
+                  Votre mot de passe/username est faux</span
+                >
               </div>
             </div>
           </div>
+          <v-btn v-on:click="reset" v-ripple="false" text class="resetpass"
+            >Mot de passe oublié ?</v-btn
+          >
           <v-btn
             v-on:click="sendForm"
             rounded
+            elevation="0"
             style="
-              height: 40px;
+              height: 45px;
               width: 420px;
               border-radius: 8px;
               background-color: #c8e4f0;
               color: #5d4e5f;
             "
-            >creer le compte</v-btn
+            >se connecter</v-btn
           >
         </div>
       </div>
@@ -124,125 +90,17 @@
 </template>
 
 <script>
-import useValidate from "@vuelidate/core";
-import {
-  required,
-  email,
-  minLength,
-  sameAs,
-  helpers,
-} from "@vuelidate/validators";
-import { reactive, computed } from "vue";
 export default {
-  name: "sign-up",
-  setup() {
-    const state = reactive({
-      username: null,
-      email: null,
-      password: null,
-      confirmed: null,
-      istakenUser: null,
-      istakenEmail: null,
-    });
-    function takenUser(value) {
-      if (value === null) return true;
-      fetch("http://localhost:8080/users/verifyUsername", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: value,
-        }),
-      }).then((res) => {
-        return res
-          .json()
-          .then((data) => {
-            this.state.istakenUser = data.msg;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-      return this.state.istakenUser;
-    }
-    function takenEmail(value) {
-      if (value === null) return true;
-      fetch("http://localhost:8080/users/verifyEmail", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: value,
-        }),
-      }).then((res) => {
-        return res
-          .json()
-          .then((data) => {
-            this.state.istakenEmail = data.msg;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-      return this.state.istakenEmail;
-    }
-    const rules = computed(() => {
-      return {
-        username: {
-          required: helpers.withMessage(
-            "Veuiller ecrire votre username",
-            required
-          ),
-          TakenUser: helpers.withMessage("le Username est pris", takenUser),
-        },
-        email: {
-          required: helpers.withMessage(
-            "Veuiller écrire votre email",
-            required
-          ),
-          email: helpers.withMessage(
-            "Veuiller écrire un email existant",
-            email
-          ),
-          TakenEmail: helpers.withMessage("l'email est pris", takenEmail),
-        },
-        password: {
-          required: helpers.withMessage(
-            "Veuiller écrire un mot de passe",
-            required
-          ),
-          minLength: helpers.withMessage(
-            "Vueiller écrire au moins 6 charactére",
-            minLength(6)
-          ),
-        },
-        confirmed: {
-          required: helpers.withMessage(
-            "Veuiller écrire un mot de passe",
-            required
-          ),
-          sameAs: helpers.withMessage(
-            "Les mots de passes sont pas les memes",
-            sameAs(state.password)
-          ),
-        },
-      };
-    });
-    const v$ = useValidate(rules, state);
-    return {
-      state,
-      v$,
-    };
-  },
+  name: "log-in",
+  data: () => ({
+    username: null,
+    password: null,
+    wrong: false,
+  }),
   methods: {
     sendForm() {
-      this.v$.$validate();
-      if (!this.v$.$error) {
-        fetch("http://localhost:8080/users/sign-up", {
+      if (this.username != null || this.password != null) {
+        fetch("http://localhost:8080/users/login", {
           method: "POST",
           credentials: "include",
           headers: {
@@ -250,28 +108,25 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: this.state.username,
-            email: this.state.email,
-            password: this.state.password,
+            username: this.username,
+            password: this.password,
           }),
         })
+          .then((res) => res.json())
           .then((res) => {
-            if (res.status === 200) {
-              console.log("good");
+            if (res.msg === 400) {
+              this.wrong = true;
+            } else {
+              this.$router.push("Dashboard");
               //redirect here
             }
-          })
-          .catch((err) => {
-            console.error(err);
           });
+      } else {
+        this.wrong = true;
       }
     },
-
-    checkUsername() {
-      this.v$.username.$touch();
-    },
-    checkEmail() {
-      this.v$.email.$touch();
+    reset() {
+      this.$router.push("reset");
     },
   },
 };
@@ -300,8 +155,8 @@ export default {
   .login-rect {
     display: flex;
     flex-direction: column;
-    margin: 15% 25% 25% 25%;
-    gap: 32px;
+    margin: 150px 25% 25% 25%;
+    gap: 40px;
     .main-text {
       display: flex;
       flex-direction: column;
@@ -325,7 +180,7 @@ export default {
     .main-inputs {
       display: flex;
       flex-direction: column;
-      gap: 64px;
+      gap: 24px;
       .input-box {
         display: flex;
         flex-direction: column;
@@ -358,6 +213,26 @@ export default {
           }
         }
       }
+      .resetpass::before {
+        display: none;
+      }
+      .resetpass {
+        margin-left: 43%;
+        font-size: 15px;
+        line-height: 30px;
+        text-decoration-line: underline;
+        text-transform: capitalize;
+        color: #6b71c5;
+      }
+
+      .v-btn {
+        height: 40px;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 28px;
+        letter-spacing: normal;
+        text-transform: capitalize;
+      }
     }
   }
 }
@@ -373,8 +248,5 @@ export default {
   opacity: 30%;
   color: #3f3f3f;
   background-color: #ffffff;
-}
-.v-btn {
-  height: 40px;
 }
 </style>
