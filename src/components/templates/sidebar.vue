@@ -53,7 +53,7 @@
     </v-list>
     <template v-slot:append>
       <article
-        class="small-btn-container"
+        class="small-btn-container ml-auto mr-auto mb-4"
         @click="changeTheme(isDarkTheme ? 0 : 1)"
       >
         <font-awesome-icon

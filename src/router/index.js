@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Schedule from "@/pages/schedule.vue";
 import Home from "@/pages/landing.vue";
 import Dashboard from "@/pages/dashboard.vue";
+import User from "@/pages/user.vue";
 import Page from "@/pages/page.vue";
 
 Vue.use(VueRouter);
@@ -33,7 +34,7 @@ const routes = [
       {
         path: "user",
         name: "Compte",
-        component: Dashboard,
+        component: User,
         auth: true,
       },
     ],

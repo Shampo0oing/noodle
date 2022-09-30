@@ -23,35 +23,31 @@
           :weekdays="$vuetify.breakpoint.mdAndUp ? [1, 2, 3, 4, 5] : [1, 2, 3]"
           :interval-minutes="60"
           :short-intervals="false"
-          @click:event="showEventMenu"
-          @contextmenu:event="showEvenContextMenu($refs.contextMenu, $event)"
+          @click:event="showEventMenu($refs.contextMenu, $event)"
+          @contextmenu:event="showEventMenu($refs.contextMenu, $event)"
         >
         </v-calendar>
         <ContextMenu ref="contextMenu"></ContextMenu>
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          offset-x
-        >
-          <v-card min-width="350px" flat color="bgColor1">
-            <v-toolbar :elevation="0" outlined color="bgColor2">
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-
-              <v-spacer></v-spacer>
-
-              <trash-icon @click="deleteEvent(selectedEvent)"></trash-icon>
-            </v-toolbar>
-            <v-card-text>
-              <span v-html="selectedEvent.details"></span>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false">
-                Cancel
-              </v-btn>
+        <v-dialog persistent v-model="dialogModify" width="500px">
+          <v-card>
+            <v-card-title>
+              <v-text-field v-model="selectedEvent.name"></v-text-field>
+            </v-card-title>
+            <v-card-subtitle class="d-flex gap-2">
+              <TimePicker></TimePicker>
+              <TimePicker></TimePicker>
+            </v-card-subtitle>
+            <v-card-actions class="justify-end">
+              <v-btn @click="dialogModify = false">Annuler</v-btn>
+              <v-btn @click="dialogModify = false">Sauvegarder</v-btn>
             </v-card-actions>
           </v-card>
-        </v-menu>
+        </v-dialog>
+        <GroupDialog
+          :courses="selectedEvent.model"
+          @onAddEvent="addEvent($event)"
+          @onClose="selectedEvent.model = null"
+        ></GroupDialog>
       </div>
     </section>
   </div>
@@ -66,14 +62,15 @@ import {
   nextThursday,
   nextFriday,
 } from "date-fns";
-import TrashIcon from "@/icons/Trash";
 import Autocomplete from "@/components/autocomplete";
+import GroupDialog from "@/components/groupDialog";
 import ContextMenu from "@/components/tools/contextMenu";
 import HeaderBar from "@/components/templates/header";
+import TimePicker from "@/components/tools/timePicker";
 
 export default {
   name: "schedule-page",
-  components: { HeaderBar, TrashIcon, Autocomplete, ContextMenu },
+  components: { HeaderBar, Autocomplete, ContextMenu, GroupDialog, TimePicker },
   data: () => {
     const sunday = startOfWeek(new Date());
     const monday = nextMonday(sunday);
@@ -129,43 +126,24 @@ export default {
       addCourses: false,
       selectedEvent: {},
       selectedElement: null,
-      selectedOpen: false,
+      dialogModify: false,
       dialog: false,
+      menu2: false,
     };
   },
   methods: {
     console(toPrint) {
       console.log(toPrint);
     },
-    showEventMenu({ nativeEvent, event }) {
-      const open = () => {
-        this.selectedEvent = event;
-        this.selectedElement = nativeEvent.target;
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => (this.selectedOpen = true))
-        );
-      };
-
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        requestAnimationFrame(() => requestAnimationFrame(() => open()));
-      } else {
-        open();
-      }
-
-      nativeEvent.stopPropagation();
-    },
-    showEvenContextMenu(context, { nativeEvent, event }) {
+    showEventMenu(context, { nativeEvent, event }) {
       context.show(nativeEvent, [
-        {
-          icon: ["far", "folder-open"],
-          text: "Ouvrir",
-          click: () => this.showEventMenu({ nativeEvent, event }),
-        },
         {
           icon: ["far", "pen-to-square"],
           text: "Modifier",
-          click: () => alert("Option2"),
+          click: () => {
+            this.selectedEvent = event;
+            this.dialogModify = true;
+          },
         },
         {
           icon: ["fas", "list-ol"],
@@ -192,7 +170,6 @@ export default {
         ? "(" + group.time.split(" (")[1]
         : null;
       const time = labWeek ? group.time.split(" (")[0] : group.time;
-      console.log(event.isLab);
       return {
         name: event.acronym + (group.isLab ? " (LAB)" : ""),
         isLab: group.isLab,
@@ -206,6 +183,7 @@ export default {
           this.frToEngDays[group.day],
           time.split(" - ")[1].split("h").join(":")
         ),
+        model: event,
       };
     },
     addEvent(event) {
@@ -220,7 +198,7 @@ export default {
     },
     deleteEvent(event) {
       this.events = this.events.filter((e) => e.name !== event.name);
-      this.selectedOpen = false;
+      this.dialogModify = false;
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
@@ -248,7 +226,8 @@ export default {
   width: 5px;
 }
 ::v-deep ::-webkit-scrollbar-thumb {
-  background-color: var(--v-bgColor2-base);
+  background-color: var(--v-border-base);
+  //border: 1px solid grey;
   border-radius: 5px;
 }
 

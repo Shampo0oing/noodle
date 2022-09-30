@@ -17,136 +17,24 @@
       prepend-inner-icon="mdi-magnify"
       return-object
     ></v-autocomplete>
-    <v-dialog v-if="model" v-model="model" width="700px">
-      <v-card color="bgColor1">
-        <v-card-title class="text-h5"> Ajouter un cours </v-card-title>
-        <v-card-text class="mt-5"> </v-card-text>
-        <v-divider></v-divider>
-        <v-list v-if="false" color="bgColor1">
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title v-text="model.acronym"></v-list-item-title>
-              <v-list-item-subtitle v-text="model.name"></v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action>
-              <v-btn icon :href="model.link" target="_blank" color="primary">
-                <v-icon>mdi-web</v-icon>
-              </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-          <section class="groups-container d-flex gap-2 overflow-y-auto w-full">
-            <v-list-item-group
-              v-if="model.classGroups.length > 0"
-              mandatory
-              v-model="classGroupSelected"
-              active-class="selected-group"
-              class="w-full"
-            >
-              <v-card-title>Cours</v-card-title>
-              <v-list-item v-for="group in model.classGroups" :key="group._id">
-                <v-list-item-content
-                  class="group-content d-flex flex-column rounded-lg"
-                >
-                  <v-list-item-title class="w-full">
-                    <div class="d-flex justify-space-between w-full">
-                      <b>{{ group.nGroup }}</b>
-                      <div>{{ group.day }}</div>
-                      <div>{{ group.time }}</div>
-                    </div>
-                  </v-list-item-title>
-                  <v-list-item-title class="w-full">
-                    <div class="d-flex justify-space-between w-full">
-                      <div>{{ group.nClass }}</div>
-                      <div>{{ group.teacher }}</div>
-                    </div>
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-            <v-list-item-group
-              v-if="model.labGroups.length > 0"
-              mandatory
-              v-model="labGroupSelected"
-              active-class="selected-group"
-              class="w-full"
-            >
-              <v-card-title>Laboratoires</v-card-title>
-              <v-list-item v-for="group in model.labGroups" :key="group._id">
-                <v-list-item-content
-                  class="group-content d-flex flex-column rounded-lg"
-                >
-                  <v-list-item-title class="w-full">
-                    <div class="d-flex justify-space-between w-full">
-                      <b>{{ group.nGroup }}</b>
-                      <div>{{ group.day }}</div>
-                      <div>{{ group.time }}</div>
-                    </div>
-                  </v-list-item-title>
-                  <v-list-item-title class="w-full">
-                    <div class="d-flex justify-space-between w-full">
-                      <div>{{ group.nClass }}</div>
-                      <div>{{ group.teacher }}</div>
-                    </div>
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </section>
-        </v-list>
-        <v-data-table
-          v-model="classGroupSelected"
-          group-by="isLab"
-          single-select
-          show-select
-          :items-per-page="50"
-          :headers="headers"
-          :items="model.groups"
-          hide-default-footer
-        >
-          <v-data-footer></v-data-footer>
-        </v-data-table>
-        <v-card-actions v-if="model">
-          <v-spacer></v-spacer>
-          <v-btn :disabled="!model" @click="model = null">
-            Annuler
-            <v-icon right> mdi-close-circle </v-icon>
-          </v-btn>
-          <v-btn
-            color="primary"
-            :disabled="!model || !model.classGroups[classGroupSelected]"
-            @click="onAddEvent()"
-          >
-            Ajouter
-            <v-icon right> mdi-plus </v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <GroupDialog
+      :courses.sync="model"
+      @onAddEvent="onAddEvent($event)"
+      @onClose="model = null"
+    ></GroupDialog>
   </article>
 </template>
-
 <script>
+import GroupDialog from "@/components/groupDialog";
 export default {
   name: "auto-complete",
   props: ["label"],
+  components: { GroupDialog },
   data: () => ({
     entries: [],
-    headers: [
-      {
-        text: "Groupe",
-        sortable: false,
-        value: "nGroup",
-      },
-      { text: "Jour", value: "day" },
-      { text: "Heure", value: "time", sortable: false },
-      { text: "Local", value: "nClass", sortable: false },
-      { text: "Enseignant(e)(s)", value: "teacher", sortable: false },
-    ],
     isLoading: false,
     radio: [],
     model: null,
-    labGroupSelected: null,
-    classGroupSelected: [],
     search: null,
   }),
   methods: {
@@ -165,12 +53,13 @@ export default {
         };
       });
     },
-    onAddEvent() {
+    onAddEvent({ classGroup, labGroup }) {
       this.$emit("onAddEvent", {
         ...this.model,
-        class: this.model.classGroups[this.classGroupSelected],
-        laboratory: this.model.labGroups[this.labGroupSelected],
+        class: classGroup,
+        laboratory: labGroup,
       });
+      this.model = null;
     },
   },
   computed: {
@@ -189,7 +78,6 @@ export default {
         ...c,
         classGroups: this.getHours(c.groups.filter((g) => !g.isLab)),
         labGroups: this.getHours(c.groups.filter((g) => g.isLab)),
-        groups: this.getHours(c.groups),
       }));
     },
   },
@@ -233,6 +121,7 @@ export default {
     }
   }
 }
+
 ::v-deep .v-text-field__details {
   display: none;
 }

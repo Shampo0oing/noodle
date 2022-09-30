@@ -9,23 +9,25 @@
     close-on-click
     absolute
   >
-    <v-list>
-      <v-list-item-group>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :ripple="false"
-          @click="item.click()"
-        >
-          <v-list-item-icon>
-            <font-awesome-icon :icon="item.icon" />
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.text"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+    <div @contextmenu.prevent.stop>
+      <v-list>
+        <v-list-item-group>
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :ripple="false"
+            @click="item.click()"
+          >
+            <v-list-item-icon>
+              <font-awesome-icon :icon="item.icon" />
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </div>
   </v-menu>
 </template>
 
@@ -48,6 +50,9 @@ export default {
       this.$nextTick(() => {
         this.rightClicked = true;
       });
+    },
+    console(msg) {
+      console.log(msg);
     },
   },
 };
