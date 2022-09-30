@@ -4,6 +4,7 @@ import Schedule from "@/pages/schedule.vue";
 import Home from "@/pages/landing.vue";
 import Dashboard from "@/pages/dashboard.vue";
 import User from "@/pages/user.vue";
+import Email from "@/pages/email.vue";
 import Page from "@/pages/page.vue";
 
 Vue.use(VueRouter);
@@ -29,6 +30,12 @@ const routes = [
         path: "classes",
         name: "Cours",
         component: Dashboard,
+        auth: true,
+      },
+      {
+        path: "email",
+        name: "Courrier",
+        component: Email,
         auth: true,
       },
       {

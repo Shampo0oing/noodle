@@ -70,7 +70,7 @@ export default {
   data: () => ({
     message: "",
     selectedItem: 1,
-    icons: ["house", "calendar", "book-open", "user"],
+    icons: ["house", "calendar", "book-open", "envelope", "user"],
     isDarkTheme: 0,
   }),
   methods: {
