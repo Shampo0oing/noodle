@@ -9,6 +9,7 @@ import {
   faBookOpen,
   faUser,
   faListOl,
+  faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faPenToSquare,
@@ -29,6 +30,7 @@ library.add(
   faCalendar,
   faBookOpen,
   faUser,
+  faEnvelope,
   faListOl,
   faTrashCan,
   faFolderOpen,
