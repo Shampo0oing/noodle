@@ -5,7 +5,7 @@
       v-model="menu1"
       :close-on-content-click="false"
       :nudge-right="40"
-      :return-value="startTime"
+      :return-value="model.start"
       transition="scale-transition"
       offset-y
       max-width="290px"
@@ -13,8 +13,9 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
-          v-model="startTime"
+          v-model="model.start"
           label="Début"
+          class="shrink"
           prepend-icon="mdi-clock-time-four-outline"
           readonly
           v-bind="attrs"
@@ -23,10 +24,10 @@
       </template>
       <v-time-picker
         v-if="menu1"
-        v-model="startTime"
+        v-model="model.start"
         full-width
         ampm-in-title
-        @click:minute="$refs.picker.save(startTime)"
+        @click:minute="$refs.picker.save(model.start)"
       ></v-time-picker>
     </v-menu>
     <v-menu
@@ -34,7 +35,7 @@
       v-model="menu2"
       :close-on-content-click="false"
       :nudge-right="40"
-      :return-value="endTime"
+      :return-value="model.end"
       transition="scale-transition"
       offset-y
       max-width="290px"
@@ -42,9 +43,9 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
-          v-model="endTime"
+          v-model="model.end"
           label="Fin"
-          prepend-icon="mdi-clock-time-four-outline"
+          prepend-icon="mdi-minus"
           readonly
           v-bind="attrs"
           v-on="on"
@@ -52,10 +53,10 @@
       </template>
       <v-time-picker
         v-if="menu2"
-        v-model="endTime"
+        v-model="model.end"
         full-width
         ampm-in-title
-        @click:minute="$refs.picker.save(endTime)"
+        @click:minute="$refs.picker.save(model.end)"
       ></v-time-picker>
     </v-menu>
   </div>
@@ -64,33 +65,24 @@
 <script>
 export default {
   name: 'time-picker',
-  props: ['start', 'end'],
+  props: ['value'],
   data: () => ({
-    startTime: null,
-    endTime: null,
     menu1: false,
     menu2: false,
   }),
+  computed: {
+    model: {
+      get() {
+        return this.value;
+      },
+      set(v) {
+        this.$emit('input', v);
+      },
+    },
+  },
   methods: {
     console(msg = 'console :') {
       console.log(msg);
-      console.log(this.endTime);
-    },
-  },
-  mounted() {
-    this.startTime = this.start.split(' ')[1];
-    this.endTime = this.end.split(' ')[1];
-  },
-  watch: {
-    startTime(newTime) {
-      if (newTime !== this.start.split(' ')[1]) {
-        this.$emit('onStartTimeChange', newTime);
-      }
-    },
-    endTime(newTime) {
-      if (newTime !== this.end.split(' ')[1]) {
-        this.$emit('onEndTimeChange', newTime);
-      }
     },
   },
 };

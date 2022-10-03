@@ -41,7 +41,7 @@
           :ripple="false"
           class="list-item"
         >
-          <v-list-item-icon>
+          <v-list-item-icon class="justify-center">
             <font-awesome-icon :icon="['fas', icons[i]]" />
           </v-list-item-icon>
 
@@ -66,11 +66,11 @@
 
 <script>
 export default {
-  name: "side-bar",
+  name: 'side-bar',
   data: () => ({
-    message: "",
+    message: '',
     selectedItem: 1,
-    icons: ["house", "calendar", "book-open", "user"],
+    icons: ['house', 'calendar', 'book-open', 'user'],
     isDarkTheme: 0,
   }),
   methods: {
@@ -80,11 +80,11 @@ export default {
     changeTheme(bool) {
       this.isDarkTheme = bool;
       this.$vuetify.theme.dark = this.isDarkTheme;
-      window.localStorage.setItem("darkTheme", this.isDarkTheme);
+      window.localStorage.setItem('darkTheme', this.isDarkTheme);
     },
   },
   mounted() {
-    this.isDarkTheme = +window.localStorage.getItem("darkTheme");
+    this.isDarkTheme = +window.localStorage.getItem('darkTheme');
     this.$vuetify.theme.dark = this.isDarkTheme;
   },
 };
@@ -97,7 +97,7 @@ export default {
   color: var(--v-primary-lighten2) !important;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     right: -8px;
     width: 10px;
