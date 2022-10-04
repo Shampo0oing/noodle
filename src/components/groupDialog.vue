@@ -66,24 +66,24 @@
 
 <script>
 export default {
-  name: "group-dialog",
-  props: ["courses"],
+  name: 'group-dialog',
+  props: ['courses'],
   data: () => ({
     classGroupSelected: [],
     labGroupSelected: [],
     headers: [
       {
-        text: "Groupe",
+        text: 'Groupe',
         sortable: false,
-        value: "nGroup",
+        value: 'nGroup',
         width: 50,
       },
-      { text: "Jour", value: "day", width: 110 },
-      { text: "Heure", value: "time", sortable: false, width: 150 },
-      { text: "Local", value: "nClass", sortable: false, width: 120 },
+      { text: 'Jour', value: 'day', width: 110 },
+      { text: 'Heure', value: 'time', sortable: false, width: 150 },
+      { text: 'Local', value: 'nClass', sortable: false, width: 120 },
       {
-        text: "Enseignant(e)(s)",
-        value: "teacher",
+        text: 'Enseignant(e)(s)',
+        value: 'teacher',
         sortable: false,
         width: 250,
       },
@@ -91,7 +91,7 @@ export default {
   }),
   methods: {
     addEvent() {
-      this.$emit("onAddEvent", {
+      this.$emit('onAddEvent', {
         classGroup: this.classGroupSelected[0],
         labGroup: this.labGroupSelected[0],
       });

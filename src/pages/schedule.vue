@@ -28,25 +28,16 @@
         >
         </v-calendar>
         <ContextMenu ref="contextMenu"></ContextMenu>
-        <v-dialog persistent v-model="dialogModify" width="500px">
-          <v-card>
-            <v-card-title>
-              <v-text-field v-model="selectedEvent.name"></v-text-field>
-            </v-card-title>
-            <v-card-subtitle class="d-flex gap-2">
-              <TimePicker></TimePicker>
-              <TimePicker></TimePicker>
-            </v-card-subtitle>
-            <v-card-actions class="justify-end">
-              <v-btn @click="dialogModify = false">Annuler</v-btn>
-              <v-btn @click="dialogModify = false">Sauvegarder</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <EventEditDialog
+          v-model="eventEditDialog"
+          :event="selectedEvent"
+          :daysList="frToEngDays"
+          @onSave="saveEvent($event)"
+        ></EventEditDialog>
         <GroupDialog
-          :courses="selectedEvent.model"
+          v-if="selectedEvent"
+          v-model="selectedEvent.model"
           @onAddEvent="addEvent($event)"
-          @onClose="selectedEvent.model = null"
         ></GroupDialog>
       </div>
     </section>
@@ -66,11 +57,17 @@ import Autocomplete from "@/components/autocomplete";
 import GroupDialog from "@/components/groupDialog";
 import ContextMenu from "@/components/tools/contextMenu";
 import HeaderBar from "@/components/templates/header";
-import TimePicker from "@/components/tools/timePicker";
+import EventEditDialog from "@/components/schedule/eventEditDialog";
 
 export default {
   name: "schedule-page",
-  components: { HeaderBar, Autocomplete, ContextMenu, GroupDialog, TimePicker },
+  components: {
+    HeaderBar,
+    Autocomplete,
+    ContextMenu,
+    GroupDialog,
+    EventEditDialog,
+  },
   data: () => {
     const sunday = startOfWeek(new Date());
     const monday = nextMonday(sunday);
@@ -79,14 +76,6 @@ export default {
     const thursday = nextThursday(sunday);
     const friday = nextFriday(sunday);
     return {
-      weekDays: {
-        sunday,
-        monday,
-        tuesday,
-        wednesday,
-        thursday,
-        friday,
-      },
       frToEngDays: {
         Lundi: monday,
         Mardi: tuesday,
@@ -108,25 +97,25 @@ export default {
       events: [
         {
           color: "#234d98",
-          end: "2022-09-26 14:45",
+          start: "2022-10-03 12:45",
+          end: "2022-10-03 14:45",
           isLab: undefined,
           link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
           name: "MTH0104",
-          start: "2022-09-26 12:45",
         },
         {
           color: "#458fb5",
-          end: "2022-09-28 14:45",
+          start: "2022-10-05 12:45",
+          end: "2022-10-05 14:45",
           isLab: undefined,
           link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
           name: "MTH0104",
-          start: "2022-09-28 12:45",
         },
       ],
       addCourses: false,
-      selectedEvent: {},
+      selectedEvent: null,
       selectedElement: null,
-      dialogModify: false,
+      eventEditDialog: false,
       dialog: false,
       menu2: false,
     };
@@ -142,7 +131,7 @@ export default {
           text: "Modifier",
           click: () => {
             this.selectedEvent = event;
-            this.dialogModify = true;
+            this.eventEditDialog = true;
           },
         },
         {
@@ -198,7 +187,11 @@ export default {
     },
     deleteEvent(event) {
       this.events = this.events.filter((e) => e.name !== event.name);
-      this.dialogModify = false;
+    },
+    saveEvent(model) {
+      this.selectedEvent.name = model.name;
+      this.selectedEvent.start = this.formatDate(model.day, model.start);
+      this.selectedEvent.end = this.formatDate(model.day, model.end);
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;

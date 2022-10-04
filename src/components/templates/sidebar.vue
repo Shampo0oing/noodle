@@ -10,7 +10,7 @@
     :mini-variant="$vuetify.breakpoint.mdOnly"
   >
     <div class="w-full d-flex justify-center pa-10">
-      <router-link to="/landing">
+      <router-link to="/welcome">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="111"
@@ -41,7 +41,7 @@
           :ripple="false"
           class="list-item"
         >
-          <v-list-item-icon>
+          <v-list-item-icon class="justify-center">
             <font-awesome-icon :icon="['fas', icons[i]]" />
           </v-list-item-icon>
 
@@ -70,7 +70,7 @@ export default {
   data: () => ({
     message: "",
     selectedItem: 1,
-    icons: ["house", "calendar", "book-open", "user"],
+    icons: ["house", "calendar", "book-open", "envelope", "user"],
     isDarkTheme: 0,
   }),
   methods: {
