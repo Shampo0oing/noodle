@@ -1,20 +1,25 @@
 <template>
   <v-dialog persistent v-if="show && model?.name" v-model="show" width="500px">
     <v-card>
-      <v-card-subtitle>
+      <v-card-title>
         <v-text-field
+          dense
+          outlined
           prepend-icon="mdi-subtitles-outline"
           v-model="model.name"
         ></v-text-field>
-      </v-card-subtitle>
-      <v-card-subtitle>
+      </v-card-title>
+      <v-card-subtitle class="d-flex flex-column flex-md-row gap-2">
         <v-select
-          :items="Object.keys(daysList)"
+          dense
+          outlined
+          hide-details
+          :items="Object.entries(daysList)"
+          item-text="0"
+          item-value="1"
+          v-model="model.day"
           prepend-icon="mdi-calendar-today"
-          label="Jours de la semaine"
         ></v-select>
-      </v-card-subtitle>
-      <v-card-subtitle>
         <TimeRangePicker v-model="model"></TimeRangePicker>
       </v-card-subtitle>
       <v-card-actions class="justify-end">
@@ -26,11 +31,10 @@
 </template>
 
 <script>
-import TimeRangePicker from '@/components/tools/timeRangePicker';
-import { getDate } from 'date-fns';
+import TimeRangePicker from "@/components/tools/timeRangePicker";
 export default {
-  name: 'event-edit-dialog',
-  props: ['value', 'event', 'daysList'],
+  name: "event-edit-dialog",
+  props: ["value", "event", "daysList"],
   components: { TimeRangePicker },
   data: () => ({
     model: {
@@ -42,10 +46,10 @@ export default {
   }),
   methods: {
     console(msg) {
-      console.log(getDate(new Date(...msg.split('-'))));
+      console.log(msg);
     },
     save() {
-      this.$emit('onSave', this.model);
+      this.$emit("onSave", this.model);
       this.close();
     },
     cancel() {
@@ -58,9 +62,11 @@ export default {
     reset(event) {
       this.model = {
         name: event.name,
-        day: event.start.split(' ')[0],
-        start: event.start.split(' ')[1],
-        end: event.end.split(' ')[1],
+        day: Object.entries(this.daysList)[
+          new Date(event.start.split(" ")[0]).getDay()
+        ][1],
+        start: event.start.split(" ")[1],
+        end: event.end.split(" ")[1],
       };
     },
   },
@@ -75,7 +81,7 @@ export default {
         return this.value;
       },
       set(newEvent) {
-        this.$emit('input', newEvent);
+        this.$emit("input", newEvent);
       },
     },
   },

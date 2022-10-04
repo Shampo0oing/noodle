@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex gap-1">
     <v-menu
       ref="picker"
       v-model="menu1"
@@ -13,10 +13,13 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
+          dense
+          outlined
           v-model="model.start"
-          label="Début"
           class="shrink"
-          prepend-icon="mdi-clock-time-four-outline"
+          :prepend-icon="
+            !$vuetify.breakpoint.mdAndUp ? 'mdi-clock-time-four-outline' : null
+          "
           readonly
           v-bind="attrs"
           v-on="on"
@@ -43,8 +46,9 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
+          dense
+          outlined
           v-model="model.end"
-          label="Fin"
           prepend-icon="mdi-minus"
           readonly
           v-bind="attrs"
@@ -64,8 +68,8 @@
 
 <script>
 export default {
-  name: 'time-picker',
-  props: ['value'],
+  name: "time-picker",
+  props: ["value"],
   data: () => ({
     menu1: false,
     menu2: false,
@@ -76,12 +80,12 @@ export default {
         return this.value;
       },
       set(v) {
-        this.$emit('input', v);
+        this.$emit("input", v);
       },
     },
   },
   methods: {
-    console(msg = 'console :') {
+    console(msg = "console :") {
       console.log(msg);
     },
   },

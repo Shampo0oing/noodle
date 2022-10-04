@@ -52,15 +52,15 @@ import {
   nextWednesday,
   nextThursday,
   nextFriday,
-} from 'date-fns';
-import Autocomplete from '@/components/autocomplete';
-import GroupDialog from '@/components/groupDialog';
-import ContextMenu from '@/components/tools/contextMenu';
-import HeaderBar from '@/components/templates/header';
-import EventEditDialog from '@/components/schedule/eventEditDialog';
+} from "date-fns";
+import Autocomplete from "@/components/autocomplete";
+import GroupDialog from "@/components/groupDialog";
+import ContextMenu from "@/components/tools/contextMenu";
+import HeaderBar from "@/components/templates/header";
+import EventEditDialog from "@/components/schedule/eventEditDialog";
 
 export default {
-  name: 'schedule-page',
+  name: "schedule-page",
   components: {
     HeaderBar,
     Autocomplete,
@@ -76,14 +76,6 @@ export default {
     const thursday = nextThursday(sunday);
     const friday = nextFriday(sunday);
     return {
-      weekDays: {
-        sunday,
-        monday,
-        tuesday,
-        wednesday,
-        thursday,
-        friday,
-      },
       frToEngDays: {
         Lundi: monday,
         Mardi: tuesday,
@@ -92,32 +84,32 @@ export default {
         Vendredi: friday,
       },
       colors: [
-        '#2196f3',
-        '#3F51B5',
-        '#673AB7',
-        '#00BCD4',
-        '#48814a',
-        '#8c683d',
-        '#757575',
+        "#2196f3",
+        "#3F51B5",
+        "#673AB7",
+        "#00BCD4",
+        "#48814a",
+        "#8c683d",
+        "#757575",
       ],
       start: monday,
       today: new Date(),
       events: [
         {
-          color: '#234d98',
-          start: '2022-10-03 12:45',
-          end: '2022-10-03 14:45',
+          color: "#234d98",
+          start: "2022-10-03 12:45",
+          end: "2022-10-03 14:45",
           isLab: undefined,
-          link: 'https://www.polymtl.ca/programmes/cours/probabilites-et-statistique',
-          name: 'MTH0104',
+          link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
+          name: "MTH0104",
         },
         {
-          color: '#458fb5',
-          start: '2022-10-05 12:45',
-          end: '2022-10-05 14:45',
+          color: "#458fb5",
+          start: "2022-10-05 12:45",
+          end: "2022-10-05 14:45",
           isLab: undefined,
-          link: 'https://www.polymtl.ca/programmes/cours/probabilites-et-statistique',
-          name: 'MTH0104',
+          link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
+          name: "MTH0104",
         },
       ],
       addCourses: false,
@@ -135,50 +127,50 @@ export default {
     showEventMenu(context, { nativeEvent, event }) {
       context.show(nativeEvent, [
         {
-          icon: ['far', 'pen-to-square'],
-          text: 'Modifier',
+          icon: ["far", "pen-to-square"],
+          text: "Modifier",
           click: () => {
             this.selectedEvent = event;
             this.eventEditDialog = true;
           },
         },
         {
-          icon: ['fas', 'list-ol'],
-          text: 'Changer de groupe',
-          click: () => alert('Option2'),
+          icon: ["fas", "list-ol"],
+          text: "Changer de groupe",
+          click: () => alert("Option2"),
         },
         {
-          icon: ['far', 'trash-can'],
-          text: 'Retirer ce cours',
+          icon: ["far", "trash-can"],
+          text: "Retirer ce cours",
           click: () => this.deleteEvent(event),
         },
         {
-          icon: ['far', 'circle-question'],
-          text: 'Voir la page du cours',
-          click: () => alert('Option4'),
+          icon: ["far", "circle-question"],
+          text: "Voir la page du cours",
+          click: () => alert("Option4"),
         },
       ]);
     },
     formatDate(date, hours) {
-      return date.toISOString().split('T')[0] + ' ' + hours;
+      return date.toISOString().split("T")[0] + " " + hours;
     },
     createEvent(event, group, color) {
-      let labWeek = group.time.split(' (')[1]
-        ? '(' + group.time.split(' (')[1]
+      let labWeek = group.time.split(" (")[1]
+        ? "(" + group.time.split(" (")[1]
         : null;
-      const time = labWeek ? group.time.split(' (')[0] : group.time;
+      const time = labWeek ? group.time.split(" (")[0] : group.time;
       return {
-        name: event.acronym + (group.isLab ? ' (LAB)' : ''),
+        name: event.acronym + (group.isLab ? " (LAB)" : ""),
         isLab: group.isLab,
         link: event.link,
         color,
         start: this.formatDate(
           this.frToEngDays[group.day],
-          time.split(' - ')[0].split('h').join(':')
+          time.split(" - ")[0].split("h").join(":")
         ),
         end: this.formatDate(
           this.frToEngDays[group.day],
-          time.split(' - ')[1].split('h').join(':')
+          time.split(" - ")[1].split("h").join(":")
         ),
         model: event,
       };
@@ -198,8 +190,8 @@ export default {
     },
     saveEvent(model) {
       this.selectedEvent.name = model.name;
-      this.selectedEvent.start = model.day + ' ' + model.start;
-      this.selectedEvent.end = model.day + ' ' + model.end;
+      this.selectedEvent.start = this.formatDate(model.day, model.start);
+      this.selectedEvent.end = this.formatDate(model.day, model.end);
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
