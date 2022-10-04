@@ -81,7 +81,9 @@
             "
             >se connecter</v-btn
           >
-          <GoogleLogin class="gbutton" :params="params" :onSuccess="onSuccess">Se connecter avec Google</GoogleLogin>
+          <GoogleLogin class="gbutton" :params="params" :onSuccess="onSuccess"
+            >Se connecter avec Google</GoogleLogin
+          >
         </div>
       </div>
     </div>
@@ -90,21 +92,21 @@
 </template>
 
 <script>
-import { GoogleLogin } from 'vue-google-login';
+import { GoogleLogin } from "vue-google-login";
 export default {
-
   name: "log-in",
   data: () => ({
     username: null,
     password: null,
     wrong: false,
     params: {
-      client_id: "459599346269-srkk8044rkjjvgeuceqoitj78v4kre9v.apps.googleusercontent.com"
+      client_id:
+        "459599346269-srkk8044rkjjvgeuceqoitj78v4kre9v.apps.googleusercontent.com",
     },
   }),
 
   components: {
-    GoogleLogin
+    GoogleLogin,
   },
   methods: {
     sendForm() {
@@ -139,10 +141,32 @@ export default {
     },
     onSuccess(googleUser) {
       console.log(googleUser);
-
       // This only gets the user information: id, name, imageUrl and email
-      console.log(googleUser.getBasicProfile());
-    }
+      const user = googleUser.getBasicProfile();
+
+      fetch("http://localhost:8080/users/googleLogin", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: user.name,
+          email: user.email,
+          imageUrl: user.imageUrl,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.msg === 400) {
+            this.wrong = true;
+          } else {
+            this.$router.push("Dashboard");
+            //redirect here
+          }
+        });
+    },
   },
 };
 </script>
@@ -264,12 +288,12 @@ export default {
   background-color: #ffffff;
 }
 .gbutton {
-  transition: background-color .3s, box-shadow .3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
 
   padding: 12px 16px 12px 42px;
   border: none;
   border-radius: 8px;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
 
   color: #757575;
   font-size: 14px;
@@ -281,7 +305,7 @@ export default {
   background-position: 70px 11px;
 
   &:hover {
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 2px 4px rgba(0, 0, 0, .25);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
   }
 
   &:active {
@@ -290,16 +314,14 @@ export default {
 
   &:focus {
     outline: none;
-    box-shadow:
-        0 -1px 0 rgba(0, 0, 0, .04),
-        0 2px 4px rgba(0, 0, 0, .25),
-        0 0 0 3px #c8dafc;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+      0 0 0 3px #c8dafc;
   }
 
   &:disabled {
     filter: grayscale(100%);
     background-color: #ebebeb;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
     cursor: not-allowed;
   }
 }

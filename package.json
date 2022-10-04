@@ -19,7 +19,8 @@
     "sass": "^1.54.9",
     "vue": "^2.6.11",
     "vue-google-login": "^2.0.5",
-    "vue-router": "^3.6.5"
+    "vue-router": "^3.6.5",
+    "vue3-google-login": "^2.0.12"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
