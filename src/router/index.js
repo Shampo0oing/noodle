@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Schedule from "@/pages/schedule.vue";
 import Home from "@/pages/landing.vue";
 import Dashboard from "@/pages/dashboard.vue";
+import User from "@/pages/user.vue";
+import Email from "@/pages/email.vue";
 import Page from "@/pages/page.vue";
 import Signup from "@/pages/signup";
 import Login from "@/pages/login";
@@ -18,33 +20,39 @@ const routes = [
     children: [
       {
         path: "dashboard",
-        name: "Dashboard",
+        name: "Accueil",
         component: Dashboard,
         auth: true,
       },
       {
         path: "schedule",
-        name: "Schedule",
+        name: "Horaire",
         component: Schedule,
         auth: true,
       },
       {
         path: "classes",
-        name: "Classes",
+        name: "Cours",
         component: Dashboard,
         auth: true,
       },
       {
+        path: "email",
+        name: "Courrier",
+        component: Email,
+        auth: true,
+      },
+      {
         path: "user",
-        name: "User",
-        component: Dashboard,
+        name: "Compte",
+        component: User,
         auth: true,
       },
     ],
   },
   {
     path: "/welcome",
-    name: "Landing",
+    name: "Welcome",
     component: Home,
   },
   {

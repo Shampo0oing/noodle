@@ -49,7 +49,7 @@
                 <span class="input-text">Mot de passe</span>
                 <v-text-field
                   v-model="password"
-                  v-on:keyup.native.enter="sendForm"
+                  @keyup.native.enter="sendForm"
                   label="entrer le Mot de passe"
                   single-line
                   outlined
@@ -66,11 +66,11 @@
               </div>
             </div>
           </div>
-          <v-btn v-on:click="reset" v-ripple="false" text class="resetpass"
+          <v-btn @click="reset" v-ripple="false" text class="resetpass"
             >Mot de passe oublié ?</v-btn
           >
           <v-btn
-            v-on:click="sendForm"
+            @click="sendForm"
             rounded
             elevation="0"
             style="
@@ -212,7 +212,6 @@ export default {
         font-size: 17px;
         line-height: 28px;
         width: 110%;
-        text-transform: capitalize;
         color: rgba(63, 63, 63, 0.69);
       }
     }
@@ -262,6 +261,7 @@ export default {
         text-decoration-line: underline;
         text-transform: capitalize;
         color: #6b71c5;
+        justify-content: end;
       }
 
       .v-btn {

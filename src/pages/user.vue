@@ -7,11 +7,8 @@
 <script>
 import HeaderBar from "@/components/templates/header";
 export default {
-  name: "dashboard-app",
+  name: "user-page",
   components: { HeaderBar },
-  data() {
-    return {};
-  },
 };
 </script>
 

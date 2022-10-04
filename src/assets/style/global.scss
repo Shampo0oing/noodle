@@ -42,3 +42,35 @@
   text-overflow: ellipsis;
 }
 
+.dark-lotti path {
+  stroke: white;
+}
+
+//Cursor
+
+.pointer {
+  cursor: pointer;
+}
+
+//Small component
+
+.small-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 8px;
+  width: fit-content;
+  color: white;
+  border: 1px solid grey;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  &:hover {
+    border-color: grey;
+    background: var(--v-sideBar-lighten1);
+  }
+}
+
