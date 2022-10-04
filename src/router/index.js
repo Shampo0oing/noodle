@@ -6,6 +6,10 @@ import Dashboard from "@/pages/dashboard.vue";
 import User from "@/pages/user.vue";
 import Email from "@/pages/email.vue";
 import Page from "@/pages/page.vue";
+import Signup from "@/pages/signup";
+import Login from "@/pages/login";
+import Resetpass from "@/pages/resetPassword";
+import Changepass from "@/pages/changepass";
 
 Vue.use(VueRouter);
 
@@ -47,9 +51,29 @@ const routes = [
     ],
   },
   {
-    path: "/landing",
-    name: "Landing",
+    path: "/welcome",
+    name: "Welcome",
     component: Home,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: Signup,
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: "/reset",
+    name: "resetPass",
+    component: Resetpass,
+  },
+  {
+    path: "/changePass/:userId/:token",
+    name: "changePass",
+    component: Changepass,
   },
 ];
 
