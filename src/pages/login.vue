@@ -84,6 +84,10 @@
           <GoogleLogin class="gbutton" :params="params" :onSuccess="onSuccess"
             >Se connecter avec Google</GoogleLogin
           >
+          <v-divider></v-divider>
+          <v-btn @click="signup" v-ripple="false" text class="signup-btn"
+            >Pas de compte ? Créer un compte maintentant !</v-btn
+          >
         </div>
       </div>
     </div>
@@ -139,6 +143,10 @@ export default {
     reset() {
       this.$router.push("reset");
     },
+    signup() {
+      this.$router.push("signup");
+    },
+
     onSuccess(googleUser) {
       console.log(googleUser);
       // This only gets the user information: id, name, imageUrl and email
@@ -262,6 +270,18 @@ export default {
         text-transform: capitalize;
         color: #6b71c5;
         justify-content: end;
+      }
+      .signup-btn::before {
+        display: none;
+      }
+      .signup-btn {
+        margin-left: 43%;
+        font-size: 15px;
+        line-height: 30px;
+        text-decoration-line: underline;
+        text-transform: capitalize;
+        color: #6b71c5;
+        justify-content: center !important;
       }
 
       .v-btn {

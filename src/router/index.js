@@ -22,31 +22,41 @@ const routes = [
         path: "dashboard",
         name: "Accueil",
         component: Dashboard,
-        auth: true,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "schedule",
         name: "Horaire",
         component: Schedule,
-        auth: true,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "classes",
         name: "Cours",
         component: Dashboard,
-        auth: true,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "email",
         name: "Courrier",
         component: Email,
-        auth: true,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "user",
         name: "Compte",
         component: User,
-        auth: true,
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },
@@ -81,4 +91,33 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    console.log(Vue.prototype.$userInfo);
+    if (!Vue.prototype.$isAuth) {
+      fetch("http://localhost:8080/users/cookiesLogin", {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res.status);
+          if (res.status === 200) {
+            Vue.prototype.$isAuth = true;
+            Vue.prototype.$userInfo = res;
+            next();
+          } else {
+            console.log("iiii");
+            Vue.prototype.$isAuth = false;
+            next({ name: "login" });
+          }
+        });
+    } else {
+      next(); // go to wherever I'm going
+    }
+  } else {
+    next(); // does not require auth, make sure to always call next()!
+  }
+});
 export default router;

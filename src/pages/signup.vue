@@ -257,7 +257,7 @@ export default {
         })
           .then((res) => {
             if (res.status === 200) {
-              console.log("good");
+              this.$router.push("Dashboard");
               //redirect here
             }
           })

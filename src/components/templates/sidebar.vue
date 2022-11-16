@@ -4,6 +4,7 @@
     dark
     floating
     width="210"
+    height="100%"
     color="sideBar"
     :class="$vuetify.breakpoint.lgAndUp ? 'lgAndUp-nav' : 'mdAnDown-nav'"
     :permanent="$vuetify.breakpoint.mdAndUp"
@@ -31,7 +32,6 @@
         </svg>
       </router-link>
     </div>
-
     <v-list nav flat class="nav-list">
       <v-list-item-group active-class="selected" mandatory>
         <v-list-item
@@ -52,21 +52,17 @@
       </v-list-item-group>
     </v-list>
     <template v-slot:append>
-      <article
-        class="small-btn-container ml-auto mr-auto mb-4"
-        @click="changeTheme(isDarkTheme ? 0 : 1)"
-      >
-        <font-awesome-icon
-          :icon="['far', isDarkTheme ? 'fa-sun' : 'fa-moon']"
-        />
-      </article>
+      <v-divider class="mx-5"></v-divider>
+      <Avatar class="my-5"></Avatar>
     </template>
   </v-navigation-drawer>
 </template>
 
 <script>
+import Avatar from "@/components/templates/avatar";
 export default {
   name: "side-bar",
+  components: { Avatar },
   data: () => ({
     message: "",
     selectedItem: 1,
