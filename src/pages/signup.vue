@@ -253,6 +253,7 @@ export default {
             username: this.state.username,
             email: this.state.email,
             password: this.state.password,
+            color: "#" + Math.floor(Math.random() * 16777215).toString(16),
           }),
         })
           .then((res) => {

@@ -3,7 +3,7 @@
     <v-menu bottom min-width="200px" rounded offset-y>
       <template v-slot:activator="{ on }">
         <v-btn icon x-large v-on="on">
-          <v-avatar color="red" size="40">
+          <v-avatar :color="user.color" size="40">
             <span class="white--text text-h5">{{ user.initials }}</span>
           </v-avatar>
         </v-btn>
@@ -11,7 +11,7 @@
       <v-card>
         <v-list-item-content class="justify-center">
           <div class="mx-auto text-center">
-            <v-avatar color="red">
+            <v-avatar :color="user.color">
               <span class="white--text text-h5">{{ user.initials }}</span>
             </v-avatar>
             <h3>{{ user.fullName }}</h3>
@@ -42,10 +42,30 @@ export default {
       fullName: Vue.prototype.$userInfo.username,
       email: Vue.prototype.$userInfo.email,
       picture: Vue.prototype.$userInfo.imageUrl,
+      color: Vue.prototype.$userInfo.color,
     },
   }),
   methods: {
-    disc() {},
+    disc() {
+      fetch("http://localhost:8080/users/disconnect", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: Vue.prototype.$userInfo.username,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === 200) {
+            location.reload();
+            this.$router.push("login");
+          }
+        });
+    },
     edit() {
       this.$router.push("user");
     },
