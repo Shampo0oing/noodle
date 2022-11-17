@@ -60,7 +60,6 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             location.reload();
-            this.$router.push("login");
           }
         });
     },
