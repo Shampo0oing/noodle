@@ -43,6 +43,7 @@ export default {
       picture: Vue.prototype.$userInfo.imageUrl,
     },
   }),
+
   methods: {
     disc() {
       fetch("http://localhost:8080/users/disconnect", {

@@ -102,6 +102,11 @@ router.beforeEach((to, from, next) => {
     if (!Vue.prototype.$isAuth) {
       fetch("http://localhost:8080/users/cookiesLogin", {
         method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       })
         .then((res) => res.json())
         .then((res) => {
@@ -111,7 +116,6 @@ router.beforeEach((to, from, next) => {
             Vue.prototype.$userInfo = res;
             next();
           } else {
-            console.log("iiii");
             Vue.prototype.$isAuth = false;
             next({ name: "login" });
           }

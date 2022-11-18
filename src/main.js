@@ -20,6 +20,7 @@ import {
   faTrashCan,
   faSun,
   faMoon,
+  faImage,
 } from "@fortawesome/free-regular-svg-icons";
 
 import router from "./router";
@@ -39,7 +40,8 @@ library.add(
   faShareFromSquare,
   faCircleQuestion,
   faSun,
-  faMoon
+  faMoon,
+  faImage
 );
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.productionTip = false;

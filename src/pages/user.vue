@@ -127,6 +127,7 @@
               </template>
             </v-card-actions>
           </v-card>
+          <pfp-change></pfp-change>
         </v-row>
       </v-card>
     </div>
@@ -136,8 +137,11 @@
 <script>
 
 import Vue from "vue";
+import PfpChange from "@/components/templates/pfpChange";
+
 export default {
   name: "user-page",
+  components: { PfpChange },
   data() {
     return {
       dialog: false,
