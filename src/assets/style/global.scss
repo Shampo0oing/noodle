@@ -73,4 +73,10 @@
     background: var(--v-sideBar-lighten1);
   }
 }
+//font
+@font-face {
+  font-family: "gilroy";
+  src: url(../../../src/assets/fonts/Gilroy-Medium.ttf) format("truetype");
+}
+
 

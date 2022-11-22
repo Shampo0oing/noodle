@@ -46,13 +46,15 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title v-text="item.name"></v-list-item-title>
+            <v-list-item-title
+              class="names"
+              v-text="item.name"
+            ></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
     </v-list>
     <template v-slot:append>
-      <v-divider class="mx-5"></v-divider>
       <Avatar class="my-5"></Avatar>
     </template>
   </v-navigation-drawer>
@@ -60,6 +62,7 @@
 
 <script>
 import Avatar from "@/components/templates/avatar";
+
 export default {
   name: "side-bar",
   components: { Avatar },
@@ -87,6 +90,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Urbanist&display=swap");
 .selected {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
@@ -113,10 +117,17 @@ export default {
   width: 0;
 }
 
+.names {
+  font-family: "Urbanist", sans-serif;
+}
 .list-item {
   transition: color 100ms ease;
   &:hover {
     color: var(--v-primary-lighten2) !important;
   }
+}
+.v-list--nav .v-list-item:not(:last-child):not(:only-child),
+.v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
+  margin-bottom: 18px;
 }
 </style>

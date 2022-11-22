@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="text-center">
-      <v-card height="900px">
-        <v-row>
           <v-card
               elevation="8"
               :loading="dialog || dialog2"
@@ -128,8 +126,6 @@
             </v-card-actions>
           </v-card>
           <pfp-change></pfp-change>
-        </v-row>
-      </v-card>
     </div>
   </div>
 </template>
