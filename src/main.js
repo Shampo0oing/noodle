@@ -10,6 +10,9 @@ import {
   faUser,
   faListOl,
   faEnvelope,
+  faArrowUpRightFromSquare,
+  faPen,
+  faCircleMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faPenToSquare,
@@ -41,7 +44,10 @@ library.add(
   faCircleQuestion,
   faSun,
   faMoon,
-  faImage
+  faImage,
+  faArrowUpRightFromSquare,
+  faPen,
+  faCircleMinus
 );
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.config.productionTip = false;

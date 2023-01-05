@@ -32,8 +32,8 @@
         </svg>
       </router-link>
     </div>
-    <v-list nav flat class="nav-list">
-      <v-list-item-group active-class="selected" mandatory>
+    <v-list nav flat class="nav-list h-full">
+      <v-list-item-group active-class="selected" class="items-group" mandatory>
         <v-list-item
           v-for="(item, i) in $router.options.routes[0].children"
           :key="item.name"
@@ -42,31 +42,34 @@
           class="list-item"
         >
           <v-list-item-icon class="justify-center">
-            <font-awesome-icon :icon="['fas', icons[i]]" />
+            <Avatar v-if="item.path === 'user'"></Avatar>
+            <font-awesome-icon v-else :icon="['fas', icons[i]]" />
           </v-list-item-icon>
 
-          <v-list-item-content>
+          <v-list-item-content v-if="$vuetify.breakpoint.lgAndUp">
             <v-list-item-title
               class="names"
-              v-text="item.name"
+              v-text="item.path === 'user' ? username : item.name"
             ></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
     </v-list>
     <template v-slot:append>
-      <Avatar class="my-5"></Avatar>
+      <Avatar v-if="false"></Avatar>
     </template>
   </v-navigation-drawer>
 </template>
 
 <script>
 import Avatar from "@/components/templates/avatar";
+import Vue from "vue";
 
 export default {
   name: "side-bar",
   components: { Avatar },
   data: () => ({
+    username: Vue.prototype.$userInfo.username,
     message: "",
     selectedItem: 1,
     icons: ["house", "calendar", "book-open", "envelope", "user"],
@@ -97,7 +100,7 @@ export default {
   color: var(--v-primary-lighten2) !important;
 
   &::after {
-    content: "";
+    content: "" !important;
     position: absolute;
     right: -8px;
     width: 10px;
@@ -108,8 +111,22 @@ export default {
   }
 }
 
+.list-item {
+  transition: color 100ms ease;
+  &:hover {
+    color: var(--v-primary-lighten2) !important;
+  }
+  &:after {
+    content: none;
+  }
+}
+
+::v-deep .v-navigation-drawer__content {
+  display: flex;
+  flex-direction: column;
+}
+
 .lgAndUp-nav .nav-list {
-  padding-left: 32px;
   font-size: 20px;
 }
 
@@ -120,12 +137,28 @@ export default {
 .names {
   font-family: "Urbanist", sans-serif;
 }
-.list-item {
-  transition: color 100ms ease;
-  &:hover {
-    color: var(--v-primary-lighten2) !important;
+
+.items-group {
+  height: 100%;
+  position: relative;
+  a {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-column-gap: 0.5rem;
+    :nth-child(n) {
+      padding: 0 !important;
+      margin: 0 !important;
+      align-self: center !important;
+    }
   }
 }
+
+.list-item:last-child {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
 .v-list--nav .v-list-item:not(:last-child):not(:only-child),
 .v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
   margin-bottom: 18px;

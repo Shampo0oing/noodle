@@ -25,17 +25,17 @@
         <div class="main-text">
           <span class="title">Bienvenue</span>
           <span class="text"
-            >Entrer vos information afin de creer un compte!</span
+            >Entrer vos information afin de creer un compte !</span
           >
         </div>
         <div class="main-inputs">
           <div class="input-box">
             <div class="box">
-              <span class="input-text">Username</span>
+              <span class="input-text">Nom d'utilisateur</span>
               <v-text-field
                 v-on:keyup="checkUsername"
                 v-model="state.username"
-                label="entrer le Username"
+                label="Entrer votre nom d'utilisateur"
                 single-line
                 outlined
                 rounded
@@ -49,11 +49,11 @@
               }}</span>
             </div>
             <div class="box">
-              <span class="input-text">Email</span>
+              <span class="input-text">Adresse courriel</span>
               <v-text-field
                 v-on:keyup="checkEmail"
                 v-model="state.email"
-                label="entrer le Email"
+                label="Entrer votre courriel"
                 single-line
                 outlined
                 rounded
@@ -71,7 +71,7 @@
                 <span class="input-text">Mot de passe</span>
                 <v-text-field
                   v-model="state.password"
-                  label="entrer le Mot de passe"
+                  label="Entrer votre mot de passe"
                   single-line
                   outlined
                   rounded
@@ -109,7 +109,6 @@
             rounded
             style="
               height: 40px;
-              width: 420px;
               border-radius: 8px;
               background-color: #c8e4f0;
               color: #5d4e5f;
@@ -119,7 +118,6 @@
         </div>
       </div>
     </div>
-    <div class="right-rect"></div>
   </div>
 </template>
 
@@ -283,24 +281,26 @@ export default {
   font-family: Outfit, sans-serif;
   display: flex;
   flex-direction: row;
+  background: #c8e4f0;
 }
-.left-rect,
-.right-rect {
+.left-rect {
   height: 100vh;
-  width: 100%;
+  width: 960px;
 }
 
 .left-rect {
   background-color: #f4f5ff;
+  padding: 40px;
+  display: grid;
   .logo {
-    margin: 32px 25% 0 6%;
     display: flex;
     justify-content: space-between;
   }
   .login-rect {
     display: flex;
     flex-direction: column;
-    margin: 15% 25% 25% 25%;
+    margin-left: auto;
+    margin-right: auto;
     gap: 32px;
     .main-text {
       display: flex;
@@ -317,8 +317,7 @@ export default {
       .text {
         font-size: 17px;
         line-height: 28px;
-        width: 110%;
-        text-transform: capitalize;
+        text-transform: initial;
         color: rgba(63, 63, 63, 0.69);
       }
     }
@@ -362,19 +361,8 @@ export default {
   }
 }
 
-.right-rect {
-  background-color: #c8e4f0;
-  .right-image {
-  }
-}
-.v-text-field--outlined {
-  border-radius: 8px;
-  width: 420px;
-  opacity: 30%;
-  color: #3f3f3f;
-  background-color: #ffffff;
-}
 .v-btn {
   height: 40px;
+  text-transform: initial;
 }
 </style>

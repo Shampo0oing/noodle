@@ -1,148 +1,269 @@
 <template>
   <div>
-    <div class="text-center">
-          <v-card
-              elevation="8"
-              :loading="dialog || dialog2"
-              class="mx-auto my-12"
-              max-width="300"
-          >
-            <template slot="progress">
-              <v-progress-linear
-                  color="#89AEF1"
-                  height="10"
-                  indeterminate
-              ></v-progress-linear>
-            </template>
-            <v-img
-                height="250"
-                src="https://www.tituslearning.com/wp-content/uploads/2022/08/Moodle.jpeg"
-            ></v-img>
-            <v-card-title color: >Connecter votre Moodle</v-card-title>
-            <v-card-text>
-              <div>Accéder à vos examen, vos quiz , votre calendrier tout à partir de noodle!</div>
-            </v-card-text>
-            <v-divider class="mx-4"></v-divider>
+    <header>
+      <HeaderBar></HeaderBar>
+    </header>
+    <main class="d-flex flex-column gap-3">
+      <section class="d-flex flex-column gap-3">
+        <div>
+          <h3>Informations utilisateur</h3>
+          <span>Gérer les informations du compte</span>
+        </div>
+        <article>
+          <h4>Photo de profile</h4>
+          <pfp-change></pfp-change>
+        </article>
+        <v-row style="max-width: 700px">
+          <v-col style="min-width: 320px">
+            <div class="d-flex">
+              <h4>Nom affiché</h4>
+              <v-spacer></v-spacer>
+              <span class="text--secondary">Visible par les autres</span>
+            </div>
+            <v-text-field
+              v-model="username"
+              label="Camillou"
+              single-line
+              hide-details
+              outlined
+              dense
+            ></v-text-field>
+          </v-col>
+          <v-col style="min-width: 320px">
+            <div class="d-flex">
+              <h4>Prénom et nom</h4>
+              <v-spacer></v-spacer>
+              <span class="text--secondary">Nom et prénom complet</span>
+            </div>
+            <v-text-field
+              v-model="username"
+              label="Camille Durant"
+              single-line
+              hide-details
+              outlined
+              dense
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <section style="max-width: 700px">
+          <div class="d-flex flex-wrap">
+            <h4>Adresse courriel</h4>
             <v-spacer></v-spacer>
-            <v-card-actions class="justify-center">
-              <template>
-                <v-dialog  v-if="!linked" v-model="dialog" content-class="moodle-pop" width="300">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
+            <span class="text--secondary">
+              Pour les notification et se connecter
+            </span>
+          </div>
+          <v-text-field
+            v-model="email"
+            label="exemple@gmail.com"
+            single-line
+            hide-details
+            outlined
+            dense
+          ></v-text-field>
+        </section>
+      </section>
+      <v-divider></v-divider>
+      <section>
+        <div class="mb-4">
+          <h3>Connexions</h3>
+          <span>Gérer vos services et comptes connectés</span>
+        </div>
+        <v-card elevation="8" max-width="500" class="rounded-lg">
+          <template slot="progress">
+            <v-progress-linear
+              color="#89AEF1"
+              height="10"
+              indeterminate
+            ></v-progress-linear>
+          </template>
+          <div class="px-3 pt-1 pb-4">
+            <section class="d-flex justify-center flex-wrap align-center">
+              <article>
+                <v-img
+                  contain
+                  height="70"
+                  width="70"
+                  src="https://play-lh.googleusercontent.com/WETi4kiHx6KfyGBDsZ1-jgPdAATt8n6Fq4tK05TOBe_z6NxsoWjrGkDyy8PIW29pvJw=w240-h480-rw"
+                ></v-img>
+              </article>
+              <div class="d-flex flex-column justify-start">
+                <div class="text--primary font-weight-medium w-fit">Moodle</div>
+                <a
+                  class="text--secondary body-2 text-decoration-none"
+                  href="https://moodle.polymtl.ca/"
+                  target="_blank"
+                >
+                  moodle.polymtl.ca
+                  <font-awesome-icon
+                    style="opacity: 0.6"
+                    class="ml-1"
+                    icon="fa-solid fa-arrow-up-right-from-square"
+                  />
+                </a>
+              </div>
+              <v-spacer></v-spacer>
+              <v-card-actions class="justify-center">
+                <template>
+                  <v-dialog
+                    v-if="!linked"
+                    v-model="dialog"
+                    content-class="moodle-pop"
+                    width="340"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
                         v-if="!linked"
-                        class="moodle-button"
+                        color="primary"
                         v-bind="attrs"
                         v-on="on"
                         rounded
-                    >Link Moodle</v-btn
-                    >
-
-                  </template>
-                  <v-card>
-                    <v-card-title class="text-h5" style="color: #b8b5ff">
-                      Connection Moodle
-                    </v-card-title>
-                    <v-card-text> Connecter vous avec votre compte moodle! </v-card-text>
-                    <v-col class="inputs">
-                      <v-text-field
-                          label="Username"
+                      >
+                        Se connecter
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title class="text-h5 primary--text">
+                        Connection Moodle
+                      </v-card-title>
+                      <v-card-text>
+                        Connecter vous avec votre compte moodle !
+                      </v-card-text>
+                      <div
+                        id="inputs-connection"
+                        class="d-flex flex-column gap-2 px-4 pb-4"
+                      >
+                        <v-text-field
                           v-model="username"
-                          hide-details="auto"
+                          label="Nom d'utilisateur"
                           :rules="rules"
-                          color="#b8b5ff"
-                      ></v-text-field>
-                      <v-text-field
-                          label="Password"
-                          @keyup.native.enter="sendForm"
+                          height="45"
+                          single-line
+                          hide-details
+                          outlined
+                          rounded
+                          full-width
+                          dense
+                        ></v-text-field>
+                        <v-text-field
                           v-model="password"
-                          hide-details="auto"
-                          type="password"
+                          @keyup.native.enter="sendForm"
                           :rules="rules"
-                          color="#b8b5ff"
-                      ></v-text-field>
-                      <span
+                          label="Mot de passe"
+                          type="password"
+                          height="45"
+                          single-line
+                          hide-details
+                          outlined
+                          rounded
+                          full-width
+                          dense
+                        ></v-text-field>
+                        <span
                           v-if="wrong"
                           class="wrongPass"
                           style="color: red; font-size: 10pt"
-                      >
-        Votre mot de passe/username est faux</span
-                      >
-                    </v-col>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-btn
-                          text
+                        >
+                          Votre mot de passe ou nom d'utilsateur est
+                          incorrecte</span
+                        >
+                      </div>
+                      <v-divider></v-divider>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
                           @click="sendForm"
+                          :disabled="!username || !password"
                           :loading="loading"
                           class="ma-1"
-                          plain
-                          style="height: 30px; border-radius: 8px; color: #b8b5ff"
-                      >se connecter</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-                <v-dialog v-else v-model="dialog2" content-class="moodle-unlink" width="300">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
+                          rounded
+                          color="primary"
+                          >se connecter</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                  <v-dialog
+                    v-else
+                    v-model="dialog2"
+                    content-class="moodle-unlink"
+                    width="340"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
                         v-if="linked"
+                        color="error"
                         class="moodle-unlinkBtn"
                         v-bind="attrs"
                         v-on="on"
                         rounded
-                    ><v-icon x-small> mdi-minus-circle</v-icon> unlink Moodle</v-btn
-                    >
-
-                  </template>
-                  <v-card>
-                    <v-card-title class="text-h5" style="color: #b8b5ff">
-                      Unlink Moodle
-                    </v-card-title>
-                    <v-card-text> Êtes-Vous Sûr de vouloir vous déconnecter de moodle ? </v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-btn
+                      >
+                        <font-awesome-icon
+                          class="mr-1"
+                          icon="fa-solid fa-circle-minus"
+                        />
+                        se déconnecter
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title class="text-h5 primary--text">
+                        Se déconnecter de Moodle
+                      </v-card-title>
+                      <v-card-text>
+                        Êtes-Vous Sûr de vouloir vous déconnecter de moodle ?
+                      </v-card-text>
+                      <v-divider></v-divider>
+                      <v-card-actions>
+                        <v-spacer></v-spacer
+                        ><v-btn
+                          @click="dialog2 = false"
+                          :loading="loading"
                           text
+                          rounded
+                          class="ma-1"
+                          >Anuller</v-btn
+                        >
+                        <v-btn
+                          color="primary"
                           @click="unlink"
                           :loading="loading"
+                          rounded
                           class="ma-1"
-                          plain
-                          style="height: 30px; border-radius: 8px; color: #b8b5ff"
-                      >Oui</v-btn
-                      >
-                      <v-btn
-                          text
-                          @click="dialog2=false"
-                          :loading="loading"
-                          class="ma-1"
-                          plain
-                          style="height: 30px; border-radius: 8px; color: #b8b5ff"
-                      >Anuller</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </template>
-            </v-card-actions>
-          </v-card>
-          <pfp-change></pfp-change>
-    </div>
+                          >Oui</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </template>
+              </v-card-actions>
+            </section>
+            <section>
+              <span class="body-2 text--primary">
+                Accéder à vos examen, vos quiz , votre calendrier tout à partir
+                de noodle !
+              </span>
+            </section>
+          </div>
+        </v-card>
+      </section>
+    </main>
   </div>
 </template>
 
 <script>
-
 import Vue from "vue";
-import PfpChange from "@/components/templates/pfpChange";
+import PfpChange from "@/components/account/pfpChange";
+import HeaderBar from "@/components/templates/header";
 
 export default {
   name: "user-page",
-  components: { PfpChange },
+  components: { HeaderBar, PfpChange },
   data() {
     return {
       dialog: false,
       username: null,
       password: null,
+      email: null,
       wrong: false,
       loading: false,
       linked: Vue.prototype.$userInfo.linked_moodle,
@@ -153,7 +274,7 @@ export default {
   methods: {
     sendForm() {
       this.loading = true;
-      console.log(this.linked)
+      console.log(this.linked);
       if (this.username != null || this.password != null) {
         fetch("http://localhost:8080/moodle/moodle-link", {
           method: "POST",
@@ -168,20 +289,20 @@ export default {
             noodleUser: Vue.prototype.$userInfo.username,
           }),
         })
-            .then((res) => res.json())
+          .then((res) => res.json())
 
-            .then((res) => {
-              if (res.status === 200) {
-                this.loading = false;
-                this.linked = true;
-                this.dialog = false;
-                Vue.prototype.$userInfo.linked_moodle = false;
-              } else {
-                this.loading = false;
-                this.wrong = true;
-                //redirect here
-              }
-            });
+          .then((res) => {
+            if (res.status === 200) {
+              this.loading = false;
+              this.linked = true;
+              this.dialog = false;
+              Vue.prototype.$userInfo.linked_moodle = false;
+            } else {
+              this.loading = false;
+              this.wrong = true;
+              //redirect here
+            }
+          });
       } else {
         this.loading = false;
       }
@@ -198,21 +319,20 @@ export default {
           noodleUser: Vue.prototype.$userInfo.username,
         }),
       })
-          .then((res) => res.json())
+        .then((res) => res.json())
 
-          .then((res) => {
-            if (res.status === 200) {
-              this.loading = false;
-              this.linked = false;
-              Vue.prototype.$userInfo.linked_moodle = false;
-              this.dialog2 = false;
-            } else {
-              this.loading = false;
+        .then((res) => {
+          if (res.status === 200) {
+            this.loading = false;
+            this.linked = false;
+            Vue.prototype.$userInfo.linked_moodle = false;
+            this.dialog2 = false;
+          } else {
+            this.loading = false;
 
-              //redirect here
-            }
-          })
-
+            //redirect here
+          }
+        });
     },
   },
   // beforeCreate: function() {
@@ -238,9 +358,8 @@ export default {
     font-weight: 500 !important;
   }
 }
-.moodle-unlinkBtn{
+.moodle-unlinkBtn {
   font-size: 12px;
-  background-color: indianred !important;
   color: white;
   text-transform: capitalize;
 }

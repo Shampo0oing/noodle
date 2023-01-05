@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center">
-    <v-menu bottom min-width="200px" rounded offset-y>
+    <v-menu min-width="200px" rounded top offset-x>
       <template v-slot:activator="{ on }">
         <v-btn icon x-large v-on="on">
           <v-avatar size="40">

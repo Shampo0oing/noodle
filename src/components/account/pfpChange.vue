@@ -8,10 +8,14 @@
           style="display: none"
           @change="onFile($event)"
         />
-        <img :src="picture" id="output" class="pfp" />
+        <img :src="picture" id="output" class="pfp" alt="profile-pic" />
         <font-awesome-icon class="edit-icon" icon="fa-regular fa-image" />
       </label>
     </div>
+    <v-btn fab x-small elevation="0" color="primary" class="floating-icon">
+      <input type="file" style="display: none" @change="onFile($event)" />
+      <font-awesome-icon icon="fa-solid fa-pen" />
+    </v-btn>
     <span v-if="imgError" class="big-image-error">Image trop grande</span>
   </div>
 </template>
@@ -107,6 +111,7 @@ export default {
 
 <style scoped lang="scss">
 .main {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: fit-content;
@@ -129,6 +134,13 @@ export default {
     }
   }
 }
+
+.floating-icon {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+}
+
 .-label {
   height: 100%;
 }
@@ -143,11 +155,12 @@ export default {
   transition: opacity 150ms ease;
   cursor: pointer;
 }
+
 .pfp {
   width: 100%;
   transition: filter 150ms ease;
-  background-color: black !important;
 }
+
 .big-image-error {
   color: red;
   font-size: 12px;

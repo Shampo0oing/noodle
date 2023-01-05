@@ -31,10 +31,10 @@
         <div class="main-inputs">
           <div class="input-box">
             <div class="box">
-              <span class="input-text">Username</span>
+              <span class="input-text">Nom d'utilisateur</span>
               <v-text-field
                 v-model="username"
-                label="entrer Votre username/email"
+                label="Entrer votre nom d'utilisateur / courriel"
                 single-line
                 outlined
                 rounded
@@ -50,7 +50,7 @@
                 <v-text-field
                   v-model="password"
                   @keyup.native.enter="sendForm"
-                  label="entrer le Mot de passe"
+                  label="Entrer votre mot de passe"
                   single-line
                   outlined
                   rounded
@@ -91,7 +91,6 @@
         </div>
       </div>
     </div>
-    <div class="right-rect"></div>
   </div>
 </template>
 
@@ -185,24 +184,27 @@ export default {
   font-family: Outfit, sans-serif;
   display: flex;
   flex-direction: row;
-}
-.left-rect,
-.right-rect {
-  height: 100vh;
-  width: 100%;
+  background-color: #c8e4f0;
 }
 
 .left-rect {
+  height: 100vh;
+  width: 960px;
+}
+
+.left-rect {
+  display: grid;
+  padding: 40px;
   background-color: #f4f5ff;
   .logo {
-    margin: 32px 25% 0 6%;
     display: flex;
     justify-content: space-between;
   }
   .login-rect {
     display: flex;
     flex-direction: column;
-    margin: 150px 25% 25% 25%;
+    margin-left: auto;
+    margin-right: auto;
     gap: 40px;
     .main-text {
       display: flex;
@@ -219,7 +221,6 @@ export default {
       .text {
         font-size: 17px;
         line-height: 28px;
-        width: 110%;
         color: rgba(63, 63, 63, 0.69);
       }
     }
@@ -263,50 +264,28 @@ export default {
         display: none;
       }
       .resetpass {
-        margin-left: 43%;
-        font-size: 15px;
-        line-height: 30px;
         text-decoration-line: underline;
-        text-transform: capitalize;
-        color: #6b71c5;
         justify-content: end;
       }
       .signup-btn::before {
         display: none;
       }
       .signup-btn {
-        margin-left: 43%;
-        font-size: 15px;
-        line-height: 30px;
         text-decoration-line: underline;
-        text-transform: capitalize;
-        color: #6b71c5;
         justify-content: center !important;
       }
 
       .v-btn {
         height: 40px;
         font-weight: 400;
-        font-size: 14px;
-        line-height: 28px;
         letter-spacing: normal;
-        text-transform: capitalize;
+        text-transform: initial;
+        color: var(--v-primary-base);
       }
     }
   }
 }
 
-.right-rect {
-  background-color: #c8e4f0;
-  .right-image {
-  }
-}
-.v-text-field--outlined {
-  border-radius: 8px;
-  opacity: 30%;
-  color: #3f3f3f;
-  background-color: #ffffff;
-}
 .gbutton {
   transition: background-color 0.3s, box-shadow 0.3s;
 
@@ -322,7 +301,7 @@ export default {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
   background-color: white;
   background-repeat: no-repeat;
-  background-position: 70px 11px;
+  background-position: calc(50% - 90px);
 
   &:hover {
     box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);

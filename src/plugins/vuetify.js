@@ -18,6 +18,7 @@ export default new Vuetify({
         sideBar: "#14121E",
         primary: "#8080D7",
         border: "#546380",
+        error: "#ff6a6d",
       },
       light: {
         bgColor: "#e6e9f2",
@@ -26,6 +27,7 @@ export default new Vuetify({
         sideBar: "#14121E",
         primary: "#8080d7",
         border: "#a3abbf",
+        error: "#ff6a6d",
       },
     },
   },
