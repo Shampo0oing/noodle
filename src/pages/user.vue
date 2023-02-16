@@ -9,59 +9,75 @@
           <h3>Informations utilisateur</h3>
           <span>Gérer les informations du compte</span>
         </div>
-        <article>
-          <h4>Photo de profile</h4>
-          <pfp-change></pfp-change>
-        </article>
-        <v-row style="max-width: 700px">
-          <v-col style="min-width: 320px">
-            <div class="d-flex">
-              <h4>Nom affiché</h4>
-              <v-spacer></v-spacer>
-              <span class="text--secondary">Visible par les autres</span>
-            </div>
-            <v-text-field
-              v-model="username"
-              label="Camillou"
-              single-line
-              hide-details
-              outlined
-              dense
-            ></v-text-field>
+        <v-row style="max-width: 1040px">
+          <v-col>
+            <v-row>
+              <h4>Photo de profile</h4>
+            </v-row>
+            <v-row>
+              <pfp-change></pfp-change>
+            </v-row>
           </v-col>
-          <v-col style="min-width: 320px">
-            <div class="d-flex">
-              <h4>Prénom et nom</h4>
-              <v-spacer></v-spacer>
-              <span class="text--secondary">Nom et prénom complet</span>
-            </div>
-            <v-text-field
-              v-model="username"
-              label="Camille Durant"
-              single-line
-              hide-details
-              outlined
-              dense
-            ></v-text-field>
+          <v-col cols="12" md="10" lg="9">
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-row>
+                  <h4>Nom d'utilisateur</h4>
+                  <v-spacer></v-spacer>
+                  <span class="text--secondary">Visible par les autres</span>
+                </v-row>
+                <v-row>
+                  <v-text-field
+                    v-model="username"
+                    label="Camillou"
+                    single-line
+                    hide-details
+                    outlined
+                    dense
+                  ></v-text-field>
+                </v-row>
+              </v-col>
+              <v-col>
+                <v-row>
+                  <h4>Prénom et nom</h4>
+                  <v-spacer></v-spacer>
+                  <span class="text--secondary">Nom et prénom complet</span>
+                </v-row>
+                <v-row>
+                  <v-text-field
+                    v-model="username"
+                    label="Camille Durant"
+                    single-line
+                    hide-details
+                    outlined
+                    dense
+                  ></v-text-field>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-row>
+                  <h4>Adresse courriel</h4>
+                  <v-spacer></v-spacer>
+                  <span class="text--secondary">
+                    Pour les notification et se connecter
+                  </span>
+                </v-row>
+                <v-row>
+                  <v-text-field
+                    v-model="email"
+                    label="exemple@gmail.com"
+                    single-line
+                    hide-details
+                    outlined
+                    dense
+                  ></v-text-field>
+                </v-row>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
-        <section style="max-width: 700px">
-          <div class="d-flex flex-wrap">
-            <h4>Adresse courriel</h4>
-            <v-spacer></v-spacer>
-            <span class="text--secondary">
-              Pour les notification et se connecter
-            </span>
-          </div>
-          <v-text-field
-            v-model="email"
-            label="exemple@gmail.com"
-            single-line
-            hide-details
-            outlined
-            dense
-          ></v-text-field>
-        </section>
       </section>
       <v-divider></v-divider>
       <section>

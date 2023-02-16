@@ -266,9 +266,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
 #landing-page {
-  font-family: Outfit, sans-serif;
   display: flex;
   flex-direction: column;
   gap: 16px;

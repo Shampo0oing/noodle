@@ -1,3 +1,7 @@
+* {
+ box-sizing: border-box !important;
+}
+
 // Display
 
 .gap-1 {
@@ -36,9 +40,9 @@
 
 // Text
 
-.t-spaced {
-  letter-spacing: 1px;
-}
+//.t-spaced {
+//  letter-spacing: 1px;
+//}
 
 .t-dotted {
   white-space: nowrap;
@@ -90,8 +94,75 @@
 }
 
 @font-face {
-  font-family: "gilroy";
-  src: url(../../../src/assets/fonts/Gilroy-Medium.ttf) format("truetype");
+  font-family: 'Outfit';
+  src: url(../../../src/assets/fonts/Outfit-Regular.ttf) format("truetype");
 }
+
+@font-face {
+  font-family: 'Outfit';
+  src: url(../../../src/assets/fonts/Outfit-SemiBold.ttf) format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Kodchasan';
+  src: url(../../../src/assets/fonts/Kodchasan-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: 'Satochi';
+  src: url(../../../src/assets/fonts/Satoshi-Regular.otf) format("opentype");
+}
+
+@font-face {
+  font-family: 'Satochi';
+  src: url(../../../src/assets/fonts/Satoshi-Bold.otf) format("opentype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url(../../../src/assets/fonts/Poppins-Regular.ttf) format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url(../../../src/assets/fonts/Poppins-Medium.ttf) format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url(../../../src/assets/fonts/Poppins-SemiBold.ttf) format("truetype");
+  font-weight: 600;
+}
+
+//@font-face {
+//  font-family: 'Poppins';
+//  src: url(../../../src/assets/fonts/Poppins-Bold.ttf) format("truetype");
+//  font-weight: 700;
+//}
+
+#app, .v-application {
+  font-family: Poppins, serif;
+}
+
+.row {
+  margin: 0px !important;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 
 

@@ -4,26 +4,26 @@ import vuetify from "@/plugins/vuetify";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
-  faHouse,
-  faCalendar,
-  faBookOpen,
-  faUser,
-  faListOl,
-  faEnvelope,
   faArrowUpRightFromSquare,
-  faPen,
+  faBookOpen,
+  faCalendar,
   faCircleMinus,
+  faEnvelope,
+  faHouse,
+  faListOl,
+  faPen,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  faPenToSquare,
-  faFolderOpen,
-  faSquareMinus,
-  faShareFromSquare,
   faCircleQuestion,
-  faTrashCan,
-  faSun,
-  faMoon,
+  faFolderOpen,
   faImage,
+  faMoon,
+  faPenToSquare,
+  faShareFromSquare,
+  faSquareMinus,
+  faSun,
+  faTrashCan,
 } from "@fortawesome/free-regular-svg-icons";
 
 import router from "./router";
@@ -73,6 +73,31 @@ Vue.config.productionTip = false;
 //       }
 //     })
 //   })
+
+// Html filter
+Vue.filter("capitalize", function (value) {
+  if (!value) return "";
+  value = value.toString();
+  return value.charAt(0).toUpperCase() + value.slice(1);
+});
+
+Vue.filter("humanReadableDate", function (value) {
+  if (!value) return "";
+  const dateString = value.toString();
+  const year = parseInt(dateString.substring(0, 4), 10);
+  const month = parseInt(dateString.substring(5, 7), 10) - 1;
+  const day = parseInt(dateString.substring(8, 10), 10);
+
+  const date = new Date(year, month, day);
+
+  const options = {
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+    timeZone: "America/Toronto",
+  };
+  return date.toLocaleString("fr-FR", options);
+});
 
 new Vue({
   el: "#app",

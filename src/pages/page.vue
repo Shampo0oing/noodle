@@ -3,7 +3,7 @@
     <Sidebar></Sidebar>
     <v-main app>
       <!-- Provides the application the proper gutter -->
-      <v-container fluid class="pr-10 pl-10 pb-10">
+      <v-container fluid class="app-container">
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
@@ -29,6 +29,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.app-container {
+  padding: 2.8rem;
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  overflow: auto;
+}
 .page {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

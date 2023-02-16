@@ -33,49 +33,67 @@
       </router-link>
     </div>
     <v-list nav flat class="nav-list h-full">
-      <v-list-item-group active-class="selected" class="items-group" mandatory>
+      <v-list-item-group active-class="active" class="items-group" mandatory>
         <v-list-item
           v-for="(item, i) in $router.options.routes[0].children"
-          :key="item.name"
+          :key="i"
           :to="item.path"
           :ripple="false"
           class="list-item"
         >
-          <v-list-item-icon class="justify-center">
-            <Avatar v-if="item.path === 'user'"></Avatar>
-            <font-awesome-icon v-else :icon="['fas', icons[i]]" />
-          </v-list-item-icon>
+          <template v-slot:default="{ active, toggle }">
+            <div
+              class="list-item-content-container"
+              @click="active ? null : toggle()"
+            >
+              <v-list-item-icon class="justify-center">
+                <Avatar v-if="item.path === 'user'"></Avatar>
+                <SvgIcon v-else-if="active" :name="icons[item.path][1]" />
+                <SvgIcon v-else :name="icons[item.path][0]" />
+              </v-list-item-icon>
 
-          <v-list-item-content v-if="$vuetify.breakpoint.lgAndUp">
-            <v-list-item-title
-              class="names"
-              v-text="item.path === 'user' ? username : item.name"
-            ></v-list-item-title>
-          </v-list-item-content>
+              <v-list-item-content v-if="$vuetify.breakpoint.lgAndUp">
+                <v-list-item-title
+                  class="names"
+                  v-text="item.path === 'user' ? username : item.name"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </div>
+          </template>
         </v-list-item>
       </v-list-item-group>
     </v-list>
-    <template v-slot:append>
-      <Avatar v-if="false"></Avatar>
-    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
 import Avatar from "@/components/templates/avatar";
 import Vue from "vue";
+import SvgIcon from "@/components/icons/SvgIcon";
 
 export default {
   name: "side-bar",
-  components: { Avatar },
+  components: {
+    Avatar,
+    SvgIcon,
+  },
   data: () => ({
     username: Vue.prototype.$userInfo.username,
     message: "",
     selectedItem: 1,
-    icons: ["house", "calendar", "book-open", "envelope", "user"],
+    iconss: ["house", "calendar", "book-open", "envelope", "user"],
+    icons: {
+      dashboard: ["HomeOutline", "HomeFill"],
+      schedule: ["CalendarOutline", "CalendarFill"],
+      classes: ["CoursesOutline", "CoursesFill"],
+      email: ["MailOutline", "MailFill"],
+    },
     isDarkTheme: 0,
   }),
   methods: {
+    getSvgName(name) {
+      return this.icons[name][+this.$router.currentRoute.name === name];
+    },
     console(toPrint) {
       console.log(toPrint);
     },
@@ -93,31 +111,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Urbanist&display=swap");
-.selected {
+.active .list-item-content-container {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
-  color: var(--v-primary-lighten2) !important;
 
   &::after {
     content: "" !important;
     position: absolute;
     right: -8px;
-    width: 10px;
+    width: 9px;
     height: 100%;
-    border-top-left-radius: 7px;
+    border-top-left-radius: 6px;
     border-bottom-left-radius: 7px;
     background-color: var(--v-bgColor-base);
-  }
-}
-
-.list-item {
-  transition: color 100ms ease;
-  &:hover {
-    color: var(--v-primary-lighten2) !important;
-  }
-  &:after {
-    content: none;
   }
 }
 
@@ -130,21 +136,36 @@ export default {
   font-size: 20px;
 }
 
-.mdAnDown-nav .selected::after {
+.mdAnDown-nav .active .list-item-content-container::after {
   width: 0;
 }
 
 .names {
-  font-family: "Urbanist", sans-serif;
+  font-family: "Kodchasan", serif;
 }
 
 .items-group {
   height: 100%;
   position: relative;
-  a {
+
+  .list-item-content-container {
+    width: 100%;
     display: grid;
     grid-template-columns: 2fr 3fr;
     grid-column-gap: 0.5rem;
+    height: 3.25em !important;
+    transition: color 100ms ease;
+
+    &:hover {
+      color: var(--v-bgColor-base) !important;
+    }
+
+    &:after {
+      content: none;
+    }
+    svg {
+      width: 20px;
+    }
     :nth-child(n) {
       padding: 0 !important;
       margin: 0 !important;
@@ -155,12 +176,17 @@ export default {
 
 .list-item:last-child {
   position: absolute;
+
   width: 100%;
   bottom: 0;
+
+  .list-item-content-container {
+    grid-template-columns: 1fr 2fr;
+  }
 }
 
-.v-list--nav .v-list-item:not(:last-child):not(:only-child),
-.v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
-  margin-bottom: 18px;
-}
+//.v-list--nav .v-list-item:not(:last-child):not(:only-child),
+//.v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
+//  margin-bottom: 18px;
+//}
 </style>

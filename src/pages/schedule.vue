@@ -26,6 +26,14 @@
           @click:event="showEventMenu($refs.contextMenu, $event)"
           @contextmenu:event="showEventMenu($refs.contextMenu, $event)"
         >
+          <template v-slot:event="{ event, eventParsed }">
+            <article class="d-flex flex-column pa-4 fill-height">
+              <div class="font-weight-medium text-ellipsis">{{ event.name }}</div>
+              <div class="mt-auto text-ellipsis">
+                {{ eventParsed.start.time }} - {{ eventParsed.end.time }}
+              </div>
+            </article>
+          </template>
         </v-calendar>
         <ContextMenu ref="contextMenu"></ContextMenu>
         <EventEditDialog
@@ -83,30 +91,22 @@ export default {
         Jeudi: thursday,
         Vendredi: friday,
       },
-      colors: [
-        "#2196f3",
-        "#3F51B5",
-        "#673AB7",
-        "#00BCD4",
-        "#48814a",
-        "#8c683d",
-        "#757575",
-      ],
+      colors: ["#ffe2e2", "#fff9e2", "#e2f2ff", "#edffe2", "#f3e2ff"],
       start: monday,
       today: new Date(),
       events: [
         {
-          color: "#234d98",
-          start: "2022-10-03 12:45",
-          end: "2022-10-03 14:45",
+          color: "#ffb3b3",
+          start: "2023-01-11 10:45",
+          end: "2023-01-11 13:45",
           isLab: undefined,
           link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
           name: "MTH0104",
         },
         {
-          color: "#458fb5",
-          start: "2022-10-05 12:45",
-          end: "2022-10-05 14:45",
+          color: "#fff0b3",
+          start: "2023-01-12 12:45",
+          end: "2023-01-12 14:45",
           isLab: undefined,
           link: "https://www.polymtl.ca/programmes/cours/probabilites-et-statistique",
           name: "MTH0104",
@@ -219,12 +219,14 @@ export default {
   width: 5px;
 }
 ::v-deep ::-webkit-scrollbar-thumb {
-  background-color: var(--v-border-base);
+  background-color: var(--v-border-darken2);
   //border: 1px solid grey;
   border-radius: 5px;
 }
 
 ::v-deep .v-calendar {
+  border-radius: 1.5em 1.5em 0 0;
+
   &,
   * {
     border-color: var(--v-border-base) !important;
@@ -233,6 +235,7 @@ export default {
   .v-calendar-daily__interval-text {
     font-size: 16px !important;
   }
+
   .v-calendar-daily__scroll-area {
     max-height: 70vh;
     overflow-y: auto;
@@ -241,32 +244,76 @@ export default {
       overflow: hidden;
     }
   }
-  .v-calendar-daily_head-weekday {
-    font-size: 16px;
-  }
+
   .v-calendar-daily__body {
     background-color: var(--v-bgColor1-base);
   }
+
   .v-calendar-daily__head {
-    background-color: var(--v-bgColor2-base);
+    background-color: #f5f7f9;
+    border-bottom: 1px solid rgba(1, 1, 1, 0.08) !important;
     margin-right: 0 !important;
     padding-right: 5px;
 
-    .v-present {
-      .v-btn__content {
-        font-weight: 700;
-        color: var(--v-primary-darken4);
+    * {
+      border: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .v-calendar-daily_head-weekday {
+      font-size: 16px;
+      color: black !important;
+      font-weight: 400;
+    }
+
+    .v-calendar-daily_head-day {
+      display: flex;
+      gap: 0.5em;
+      justify-content: center;
+      align-items: center;
+      height: 4em;
+
+      .v-calendar-daily_head-day-label {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        cursor: initial;
       }
-      .v-btn--has-bg {
-        background-color: var(--v-primary-lighten1);
+
+      .v-btn {
+        font-size: 1em;
+        font-weight: 400;
+        letter-spacing: 0;
+        pointer-events: none;
+        width: fit-content;
+        height: fit-content;
       }
     }
+
+    //.v-present {
+    //  .v-btn__content {
+    //    font-weight: 700;
+    //    color: var(--v-primary-darken4);
+    //  }
+    //  .v-btn--has-bg {
+    //    background-color: var(--v-primary-lighten1);
+    //  }
+    //}
   }
 
   &.hideDays {
     .v-calendar-daily_head-day-label {
       display: none !important;
     }
+  }
+
+  .v-event-timed {
+    border: 1px solid var(--v-border-base) !important;
+    //box-shadow: rgb(0 0 0 / 14%) 0 0 3px;
+    border-radius: 1.25em;
+    font-size: 1em;
+    color: black !important;
   }
 }
 </style>

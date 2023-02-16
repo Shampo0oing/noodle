@@ -19,8 +19,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.header-text {
-  font-family: "gilroy", serif;
-}
-</style>
+<style scoped lang="scss"></style>

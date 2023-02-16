@@ -276,9 +276,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
 .signup-page {
-  font-family: Outfit, sans-serif;
   display: flex;
   flex-direction: row;
   background: #c8e4f0;

@@ -278,11 +278,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
-
 .reset-pass {
   overflow: hidden;
-  font-family: Outfit, sans-serif;
   height: 100vh;
   width: 100%;
   background-color: #f4f5ff;
