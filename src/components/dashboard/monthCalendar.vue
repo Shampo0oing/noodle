@@ -30,63 +30,59 @@
       @change="updateRange"
     >
       <template v-slot:day="{ date }">
-        <v-btn
-          icon
-          v-if="hasEvents(date)"
-          class="day-hover-container"
-          @mouseover="openMenu($event, date)"
-          @mouseleave="closeMenu"
+        <v-menu
+            v-if="hasEvents(date)"
+            open-on-hover
+            top
+            offset-y
+            :transition="false"
+            :close-on-content-click="false"
+            content-class="events-menu"
         >
-          <div class="events-dots-container">
-            <div
-              v-for="(event, index) in dateEvents[date].length > 3
-                ? 3
-                : dateEvents[date]"
-              :key="index"
-              class="event-dot"
-            ></div>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              icon
+              class="day-hover-container"
+            >
+              <div class="events-dots-container">
+                <div v-for="(event, index) in dateEvents[date].length > 3 ? 3 : dateEvents[date]"
+                    :key="index"
+                    class="event-dot"
+                />
+              </div>
+            </v-btn>
+          </template>
+          <div class="menu-content" v-if="date">
+            <section class="header">
+              <span class="date-title"> {{ date | humanReadableDate }} </span>
+              <div class="d-flex gap-1">
+                <span class="secondary--text">{{ dateEvents[date].length }}</span>
+                <span>évènements</span>
+              </div>
+            </section>
+
+            <v-divider class="header-divider"></v-divider>
+
+            <section class="events-list">
+              <article
+                  v-for="(event, index) in dateEvents[date]"
+                  :key="index"
+                  class="event-container"
+              >
+                <div class="left-divider secondary"></div>
+                <div class="event-content">
+                  <span class="time">{{ event.timeLimit }}</span>
+                  <span>{{ event.name }}</span>
+                </div>
+                <div class="event-class-name"></div>
+              </article>
+            </section>
           </div>
-        </v-btn>
+        </v-menu>
       </template>
     </v-calendar>
-    <v-menu
-      v-model="selectedDay"
-      open-on-hover
-      tile
-      offset-y
-      top
-      nudge-top="10"
-      :activator="selectedElement"
-      :transition="false"
-      content-class="events-menu"
-    >
-      <div class="menu-content" v-if="selectedDay">
-        <section class="header">
-          <span class="date-title"> {{ selectedDate | humanReadableDate }} </span>
-          <div class="d-flex gap-1">
-            <span class="secondary--text">{{ dateEvents[selectedDate].length }}</span>
-            <span>évènements</span>
-          </div>
-        </section>
-
-        <v-divider class="header-divider"></v-divider>
-
-        <section class="events-list">
-          <article
-            v-for="(event, index) in dateEvents[selectedDate]"
-            :key="index"
-            class="event-container"
-          >
-            <div class="left-divider secondary"></div>
-            <div class="event-content">
-              <span class="time">{{ event.timeLimit }}</span>
-              <span>{{ event.name }}</span>
-            </div>
-            <div class="event-class-name"></div>
-          </article>
-        </section>
-      </div>
-    </v-menu>
   </div>
 </template>
 
@@ -129,6 +125,10 @@ export default {
     openMenu(event, date) {
       this.selectedDate = date;
       this.selectedElement = event.target;
+      this.selectedElement.dispatchEvent(new MouseEvent("mouseover"));
+    },
+    console(msg) {
+      console.log(msg);
     },
     closeMenu() {
       this.selectedDay = false;
@@ -144,7 +144,6 @@ export default {
       return !!this.dateEvents[date];
     },
     viewDay() {
-      console.log("day");
       // this.more(event);
       this.focus = "";
     },
@@ -293,6 +292,7 @@ export default {
 
 .day-hover-container {
   position: absolute;
+  z-index: 2;
   inset: 0;
   left: 50%;
   transform: translate(-50%, 0);
@@ -320,8 +320,9 @@ export default {
 }
 
 .events-menu {
+  border: 1px solid var(--v-border-base);
   border-radius: 1rem !important;
-  box-shadow: rgb(0 0 0 / 16%) 0 1px 4px;
+  box-shadow: none;
 
   .menu-content {
     display: flex;

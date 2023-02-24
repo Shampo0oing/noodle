@@ -1,46 +1,48 @@
 <template>
-  <main>
-    <div class="dashboard">
-      <section class="class-section">
-        <h3>Mes cours</h3>
-        <div
+  <div class="dashboard">
+    <section class="schedule-section">
+      <Schedule :dayFormat="true"></Schedule>
+    </section>
+    <section class="calendar-section">
+      <MonthCalendar></MonthCalendar>
+    </section>
+    <section class="class-section">
+      <h3>Mes cours</h3>
+      <div
           ref="classContainer"
-          class="class-container d-flex flex-column gap-2"
+          class="class-container"
           v-if="!loadingData"
-        >
-          <class v-for="(course, i) in courses" :key="i" :course="course" />
-        </div>
-      </section>
-      <section class="calendar-section">
-        <MonthCalendar></MonthCalendar>
-      </section>
-      <section class="moodle-profile-section" v-if="false">
-        <article class="profilePicContainer">
-          <div class="profilePic">
-            <img
+      >
+        <class v-for="(course, i) in courses" :key="i" :course="course" />
+      </div>
+    </section>
+    <section class="moodle-profile-section">
+      <article class="profilePicContainer">
+        <div class="profilePic">
+          <img
               :src="user.picture.split('f2?').join('f1?')"
               alt="moodle profile pic"
               class="w-full"
-            />
-          </div>
-        </article>
-        <article class="d-flex flex-column align-center">
-          <h2 class="fullName">{{ user.name }}</h2>
-          <span class="text--primary">anthelme.clisson@polymtl.ca</span>
-        </article>
-        <v-btn class="gotToMoodleBtn" color="primary">Aller vers Moodle</v-btn>
-      </section>
-    </div>
-  </main>
+          />
+        </div>
+      </article>
+      <article class="d-flex flex-column align-center">
+        <h2 class="fullName">{{ user.name }}</h2>
+        <span class="text--primary">anthelme.clisson@polymtl.ca</span>
+      </article>
+      <v-btn class="gotToMoodleBtn" color="primary">Aller vers Moodle</v-btn>
+    </section>
+  </div>
 </template>
 
 <script>
 import Class from "@/components/dashboard/class";
 import MonthCalendar from "@/components/dashboard/monthCalendar";
+import Schedule from "@/components/schedule/schedule.vue";
 
 export default {
   name: "dashboard-app",
-  components: { MonthCalendar, Class },
+  components: { MonthCalendar, Class, Schedule },
   data: () => ({
     loadingData: false,
     calendar: [],
@@ -141,26 +143,39 @@ export default {
 <style scoped lang="scss">
 .dashboard {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   height: 100%;
-  flex-wrap: wrap;
   gap: 2rem;
 
+  h3 {
+    padding: 1rem;
+  }
+
+  .schedule-section {
+    grid-area: schedule;
+    width: 400px;
+  }
+
+  .calendar-section {
+    grid-area: calendar;
+  }
+
   .class-section {
+    grid-area: classes;
     height: 100%;
     display: flex;
     flex-direction: column;
 
-    h3 {
-      padding: 1rem;
+    .class-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      height: 100%;
+      position: relative;
+      padding: 0.5rem;
+      overflow-y: auto;
     }
-  }
-
-  .class-container {
-    height: 100%;
-    position: relative;
-    padding: 0.5rem;
-    overflow-y: auto;
   }
 
   ::v-deep ::-webkit-scrollbar {

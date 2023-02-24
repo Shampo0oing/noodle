@@ -48,8 +48,11 @@
             >
               <v-list-item-icon class="justify-center">
                 <Avatar v-if="item.path === 'user'"></Avatar>
-                <SvgIcon v-else-if="active" :name="icons[item.path][1]" />
-                <SvgIcon v-else :name="icons[item.path][0]" />
+                <div v-else class="sidebar-icon">
+                  <SvgIcon :class="[{ 'hide': active },  'inactive-icon']" :name="icons[item.path][0]" />
+                  <SvgIcon :class="[{ 'show': active }, 'active-icon']" :name="icons[item.path][1]" />
+                </div>
+
               </v-list-item-icon>
 
               <v-list-item-content v-if="$vuetify.breakpoint.lgAndUp">
@@ -111,22 +114,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.active .list-item-content-container {
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 0;
-
-  &::after {
-    content: "" !important;
-    position: absolute;
-    right: -8px;
-    width: 9px;
-    height: 100%;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 7px;
-    background-color: var(--v-bgColor-base);
-  }
-}
-
 ::v-deep .v-navigation-drawer__content {
   display: flex;
   flex-direction: column;
@@ -148,30 +135,73 @@ export default {
   height: 100%;
   position: relative;
 
-  .list-item-content-container {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    grid-column-gap: 0.5rem;
-    height: 3.25em !important;
-    transition: color 100ms ease;
+  .list-item {
+    .list-item-content-container {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      grid-column-gap: 0.5rem;
+      height: 3.25em !important;
+      transition: color 100ms ease;
 
-    &:hover {
-      color: var(--v-bgColor-base) !important;
+      &:hover {
+        color: var(--v-bgColor-base) !important;
+      }
+
+      &:after {
+        content: none;
+      }
+
+      svg {
+        width: 20px;
+      }
+
+      :nth-child(n) {
+        padding: 0 !important;
+        margin: 0 !important;
+        align-self: center !important;
+      }
+
+      &.active {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+
+        &:after {
+          content: "" !important;
+          //animation: showUpFromRight 0.2s ease-in-out;
+          position: absolute;
+          right: -8px;
+          width: 9px;
+          height: 100%;
+          border-top-left-radius: 6px;
+          border-bottom-left-radius: 7px;
+          background-color: var(--v-bgColor-base);
+          transform: translateX(0);
+        }
+      }
     }
 
-    &:after {
-      content: none;
-    }
-    svg {
-      width: 20px;
-    }
-    :nth-child(n) {
-      padding: 0 !important;
-      margin: 0 !important;
-      align-self: center !important;
+    &.active {
+      .list-item-content-container {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+
+        &:after {
+          content: "" !important;
+          animation: showUpFromRight 200ms ease-in-out;
+          position: absolute;
+          right: -8px;
+          width: 9px;
+          height: 100%;
+          border-top-left-radius: 6px;
+          border-bottom-left-radius: 7px;
+          background-color: var(--v-bgColor-base);
+        }
+      }
     }
   }
+
+
 }
 
 .list-item:last-child {
@@ -185,8 +215,37 @@ export default {
   }
 }
 
-//.v-list--nav .v-list-item:not(:last-child):not(:only-child),
-//.v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
-//  margin-bottom: 18px;
-//}
+.sidebar-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+
+
+  .active-icon {
+    position: absolute;
+    opacity: 0;
+
+    &.show {
+      opacity: 1;
+      transition: opacity 100ms ease-in-out
+    }
+  }
+  .inactive-icon {
+    opacity: 1;
+
+    &.hide {
+      opacity: 0;
+      transition: opacity 100ms ease-in-out
+    }
+  }
+}
+
+@keyframes showUpFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 </style>
